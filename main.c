@@ -3,22 +3,21 @@
 #include <stdlib.h>
 
 
-#define LARGURA 600
-#define ALTURA 600
 #define VEL 5
 
 int main(){
+	int MonitorWidth = GetMonitorWidth(0);
+	int MonitorHeight = GetMonitorHeight(0);
 
-
-    InitWindow(LARGURA, ALTURA, "macaco"); //Inicializa janela, com certo tamanho e titulo
+    InitWindow(MonitorWidth, MonitorHeight, "macaco"); //Inicializa janela, com certo tamanho e titulo
     SetTargetFPS(60);// Ajusta a janela para 60 frames por segundo
 
     Texture2D macaco = LoadTexture("assets/Sprite-donkey-kong.png"); //carrengando a textura da imagem
-    Vector2 position = {100.0, 100.0};
+    Vector2 position = {MonitorWidth/2, MonitorHeight/2};
 
-    float width = (float)macaco.width/2.0;
-    float height = (float)macaco.height;
-    Rectangle frameRec = {0.0, 0.0, width, height};
+    float SpriteWidth = (float)macaco.width/2.0;
+    float SpriteHeight = (float)macaco.height;
+    Rectangle frameRec = {0.0, 0.0, SpriteWidth, SpriteHeight};
 
     //Este laco repete enquanto a janela nao for fechada
     //Utilizamos ele para atualizar o estado do programa / jogo
@@ -27,11 +26,11 @@ int main(){
 	// Trata entrada do usuario e atualiza estado do jogo
 	if (IsKeyDown(KEY_RIGHT)) {
 	    position.x += VEL;
-        frameRec.x = 0.0 * width;
+        frameRec.x = 0.0 * SpriteWidth;
 	}
 	if (IsKeyDown(KEY_LEFT)) {
 	    position.x -= VEL;
-        frameRec.x = 1.0 * height;
+        frameRec.x = 1.0 * SpriteHeight;
 	}
 	if (IsKeyDown(KEY_UP)) {
 	    position.y -= VEL;
