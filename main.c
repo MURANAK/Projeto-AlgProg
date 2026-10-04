@@ -2,12 +2,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define LARGURA 600
-#define ALTURA 600
+
+#define LARGURA 800
+#define ALTURA 700
 #define VEL 5
 
 int main(){
     int pos[2] = {LARGURA/2, ALTURA/2};
+
 
     InitWindow(LARGURA, ALTURA, "macaco"); //Inicializa janela, com certo tamanho e titulo
     SetTargetFPS(60);// Ajusta a janela para 60 frames por segundo
