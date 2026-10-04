@@ -1,11 +1,14 @@
+# RAYLIB CHEATSHEET
 
 ## //module: rcore
+
 ### // Window-related functions
+
 void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
 
 void CloseWindow(void);                                     // Close window and unload OpenGL context
 
-bool WindowShouldClose(void);                               // Check if application should close 
+bool WindowShouldClose(void);                               // Check if application should close
 (KEY_ESCAPE pressed or windows close icon clicked)
 
 bool IsWindowReady(void);                                   // Check if window has been initialized successfully
@@ -36,7 +39,7 @@ void MaximizeWindow(void);                                  // Set window state:
 
 void MinimizeWindow(void);                                  // Set window state: minimized, if resizable
 
-void RestoreWindow(void);                                   // Restore window from being 
+void RestoreWindow(void);                                   // Restore window from being
 minimized/maximized
 
 void SetWindowIcon(Image image);                            // Set icon for window (single image, RGBA 32bit)
@@ -75,7 +78,7 @@ int GetCurrentMonitor(void);                                // Get current monit
 
 Vector2 GetMonitorPosition(int monitor);                    // Get specified monitor position
 
-int GetMonitorWidth(int monitor);                           // Get specified monitor width (current video 
+int GetMonitorWidth(int monitor);                           // Get specified monitor width (current video
 mode used by monitor)
 
 int GetMonitorHeight(int monitor);                          // Get specified monitor height (current video mode used by monitor)
@@ -103,6 +106,7 @@ void EnableEventWaiting(void);                              // Enable waiting fo
 void DisableEventWaiting(void);                             // Disable waiting for events on EndDrawing(), automatic events polling
 
 ### // Cursor-related functions
+
 void ShowCursor(void);                                      // Shows cursor
 
 void HideCursor(void);                                      // Hides cursor
@@ -152,17 +156,18 @@ void BeginVrStereoMode(VrStereoConfig config);              // Begin stereo rend
 void EndVrStereoMode(void);                                 // End stereo rendering (requires VR simulator)
 
 ### // VR stereo config functions for VR simulator
+
 VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device);     // Load VR stereo config for VR simulator device parameters
 
 void UnloadVrStereoConfig(VrStereoConfig config);           // Unload VR stereo config
 
 ### // Shader management functions
 
-**// NOTE: Shader functionality is not available on OpenGL 1.1**
+// NOTE: Shader functionality is not available on OpenGL 1.1
 
-Shader LoadShader(const char *vsFileName, const char *fsFileName);   // Load shader from files and bind default locations
+Shader LoadShader(const char *vsFileName, const char*fsFileName);   // Load shader from files and bind default locations
 
-Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode); // Load shader from code strings and bind default locations
+Shader LoadShaderFromMemory(const char *vsCode, const char*fsCode); // Load shader from code strings and bind default locations
 
 bool IsShaderValid(Shader shader);                                   // Check if a shader is valid (loaded on GPU)
 
@@ -181,6 +186,7 @@ void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture); // S
 void UnloadShader(Shader shader);                                    // Unload shader from GPU memory (VRAM)
 
 ### // Screen-space-related functions
+
 Ray GetScreenToWorldRay(Vector2 position, Camera camera);         // Get a ray trace from screen position (i.e mouse)
 
 Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, int width, int height); // Get a ray trace from screen position (i.e mouse) in a viewport
@@ -198,6 +204,7 @@ Matrix GetCameraMatrix(Camera camera);                            // Get camera 
 Matrix GetCameraMatrix2D(Camera2D camera);                        // Get camera 2d transform matrix
 
 ### // Timing-related functions
+
 void SetTargetFPS(int fps);                       // Set target FPS (maximum)
 
 float GetFrameTime(void);                         // Get time in seconds for last frame drawn (delta time)
@@ -208,7 +215,7 @@ int GetFPS(void);                                 // Get current FPS
 
 ### // Custom frame control functions
 
-**// NOTE: Those functions are intended for advanced users that want full control over the frame processing; By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents(); // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL**
+// NOTE: Those functions are intended for advanced users that want full control over the frame processing; By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents(); // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
 
 void SwapScreenBuffer(void);                      // Swap back buffer with front buffer (screen drawing)
 
@@ -217,6 +224,7 @@ void PollInputEvents(void);                       // Register all input events
 void WaitTime(double seconds);                    // Wait for some time (halt program execution)
 
 ### // Random values generation functions
+
 void SetRandomSeed(unsigned int seed);            // Set the seed for the random number generator
 
 int GetRandomValue(int min, int max);             // Get a random value between min and max (both included)
@@ -226,6 +234,7 @@ int *LoadRandomSequence(unsigned int count, int min, int max); // Load random va
 void UnloadRandomSequence(int *sequence);         // Unload random values sequence
 
 ### // Misc. functions
+
 void TakeScreenshot(const char *fileName);                // Takes a screenshot of current screen (filename extension defines format)
 
 void SetConfigFlags(unsigned int flags);                  // Setup init configuration flags (view FLAGS)
@@ -233,6 +242,7 @@ void SetConfigFlags(unsigned int flags);                  // Setup init configur
 void OpenURL(const char *url);                            // Open URL with default system browser (if available)
 
 ### // Logging system
+
 void SetTraceLogLevel(int logLevel);                      // Set the current threshold (minimum) log level
 
 void TraceLog(int logLevel, const char *text, ...);       // Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
@@ -240,30 +250,32 @@ void TraceLog(int logLevel, const char *text, ...);       // Show trace log mess
 void SetTraceLogCallback(TraceLogCallback callback);      // Set custom trace log
 
 ### // Memory management, using internal allocators
+
 void *MemAlloc(unsigned int size);                        // Internal memory allocator
 
-void *MemRealloc(void *ptr, unsigned int size);           // Internal memory reallocator
+void *MemRealloc(void*ptr, unsigned int size);           // Internal memory reallocator
 
 void MemFree(void *ptr);                                  // Internal memory free
 
 ### // File system management functions
-unsigned char *LoadFileData(const char *fileName, int *dataSize); // Load file data as byte array (read)
+
+unsigned char *LoadFileData(const char*fileName, int *dataSize); // Load file data as byte array (read)
 
 void UnloadFileData(unsigned char *data);                     // Unload file data allocated by LoadFileData()
 
-bool SaveFileData(const char *fileName, void *data, int dataSize); // Save data to file from byte array (write), returns true on success
+bool SaveFileData(const char *fileName, void*data, int dataSize); // Save data to file from byte array (write), returns true on success
 
-bool ExportDataAsCode(const unsigned char *data, int dataSize, const char *fileName);  // Export data to code (.h), returns true on success
+bool ExportDataAsCode(const unsigned char *data, int dataSize, const char*fileName);  // Export data to code (.h), returns true on success
 
-char *LoadFileText(const char *fileName);                     // Load text data from file (read), returns a '\0' terminated string
+char *LoadFileText(const char*fileName);                     // Load text data from file (read), returns a '\0' terminated string
 
 void UnloadFileText(char *text);                              // Unload file text data allocated by LoadFileText()
 
-bool SaveFileText(const char *fileName, const char *text);    // Save text data to file (write), string must be '\0' terminated, returns true on success
+bool SaveFileText(const char *fileName, const char*text);    // Save text data to file (write), string must be '\0' terminated, returns true on success
 
 ### // File access custom callbacks
 
-**// WARNING: Callbacks setup is intended for advanced users**
+// WARNING: Callbacks setup is intended for advanced users
 
 void SetLoadFileDataCallback(LoadFileDataCallback callback);  // Set custom file binary data loader
 
@@ -273,37 +285,37 @@ void SetLoadFileTextCallback(LoadFileTextCallback callback);  // Set custom file
 
 void SetSaveFileTextCallback(SaveFileTextCallback callback);  // Set custom file text data saver
 
-int FileRename(const char *fileName, const char *fileRename); // Rename file (if exists)
+int FileRename(const char *fileName, const char*fileRename); // Rename file (if exists)
 
 int FileRemove(const char *fileName);                         // Remove file (if exists)
 
-int FileCopy(const char *srcPath, const char *dstPath);       // Copy file from one path to another, dstPath created if it doesn't exist
+int FileCopy(const char *srcPath, const char*dstPath);       // Copy file from one path to another, dstPath created if it doesn't exist
 
-int FileMove(const char *srcPath, const char *dstPath);       // Move file from one directory to another, dstPath created if it doesn't exist
+int FileMove(const char *srcPath, const char*dstPath);       // Move file from one directory to another, dstPath created if it doesn't exist
 
-int FileTextReplace(const char *fileName, const char *search, const char *replacement); // Replace text in an existing file
+int FileTextReplace(const char *fileName, const char*search, const char *replacement); // Replace text in an existing file
 
-int FileTextFindIndex(const char *fileName, const char *search); // Find text in existing file
+int FileTextFindIndex(const char *fileName, const char*search); // Find text in existing file
 
 bool FileExists(const char *fileName);                        // Check if file exists
 
 bool DirectoryExists(const char *dirPath);                    // Check if a directory path exists
 
-bool IsFileExtension(const char *fileName, const char *ext);  // Check file extension (recommended include point: .png, .wav)
+bool IsFileExtension(const char *fileName, const char*ext);  // Check file extension (recommended include point: .png, .wav)
 
 int GetFileLength(const char *fileName);                      // Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 
 long GetFileModTime(const char *fileName);                    // Get file modification time (last write time)
 
-const char *GetFileExtension(const char *fileName);           // Get pointer to extension for a filename string (includes dot: '.png')
+const char *GetFileExtension(const char*fileName);           // Get pointer to extension for a filename string (includes dot: '.png')
 
-const char *GetFileName(const char *filePath);                // Get pointer to filename for a path string
+const char *GetFileName(const char*filePath);                // Get pointer to filename for a path string
 
-const char *GetFileNameWithoutExt(const char *filePath);      // Get filename string without extension (uses static string)
+const char *GetFileNameWithoutExt(const char*filePath);      // Get filename string without extension (uses static string)
 
-const char *GetDirectoryPath(const char *filePath);           // Get full path for a given fileName with path (uses static string)
+const char *GetDirectoryPath(const char*filePath);           // Get full path for a given fileName with path (uses static string)
 
-const char *GetPrevDirectoryPath(const char *dirPath);        // Get previous directory path for a given path (uses static string)
+const char *GetPrevDirectoryPath(const char*dirPath);        // Get previous directory path for a given path (uses static string)
 
 const char *GetWorkingDirectory(void);                        // Get current working directory (uses static string)
 
@@ -331,26 +343,27 @@ void UnloadDroppedFiles(FilePathList files);                  // Unload dropped 
 
 unsigned int GetDirectoryFileCount(const char *dirPath);      // Get the file count in a directory
 
-unsigned int GetDirectoryFileCountEx(const char *basePath, const char *filter, bool scanSubdirs); // Get the file count in a directory with extension filtering and recursive directory scan. Use 'DI
+unsigned int GetDirectoryFileCountEx(const char *basePath, const char*filter, bool scanSubdirs); // Get the file count in a directory with extension filtering and recursive directory scan. Use 'DI
 
 ### // Compression/Encoding functionality
-unsigned char *CompressData(const unsigned char *data, int dataSize, int *compDataSize); // Compress data (DEFLATE algorithm), memory must be MemFree()
+unsigned char *CompressData(const unsigned char*data, int dataSize, int *compDataSize); // Compress data (DEFLATE algorithm), memory must be MemFree()
 
-unsigned char *DecompressData(const unsigned char *compData, int compDataSize, int *dataSize);  // Decompress data (DEFLATE algorithm), memory must be MemFree()
+unsigned char *DecompressData(const unsigned char*compData, int compDataSize, int *dataSize);  // Decompress data (DEFLATE algorithm), memory must be MemFree()
 
-char *EncodeDataBase64(const unsigned char *data, int dataSize, int *outputSize);               // Encode data to Base64 string (includes NULL terminator), memory must be MemFree()
+char *EncodeDataBase64(const unsigned char*data, int dataSize, int *outputSize);               // Encode data to Base64 string (includes NULL terminator), memory must be MemFree()
 
-unsigned char *DecodeDataBase64(const char *text, int *outputSize);                             // Decode Base64 string (expected NULL terminated), memory must be MemFree()
+unsigned char *DecodeDataBase64(const char*text, int *outputSize);                             // Decode Base64 string (expected NULL terminated), memory must be MemFree()
 
 unsigned int ComputeCRC32(unsigned char *data, int dataSize); // Compute CRC32 hash code
 
-unsigned int *ComputeMD5(unsigned char *data, int dataSize);  // Compute MD5 hash code, returns static int[4] (16 bytes)
+unsigned int *ComputeMD5(unsigned char*data, int dataSize);  // Compute MD5 hash code, returns static int[4] (16 bytes)
 
-unsigned int *ComputeSHA1(unsigned char *data, int dataSize); // Compute SHA1 hash code, returns static int[5] (20 bytes)
+unsigned int *ComputeSHA1(unsigned char*data, int dataSize); // Compute SHA1 hash code, returns static int[5] (20 bytes)
 
-unsigned int *ComputeSHA256(unsigned char *data, int dataSize); // Compute SHA256 hash code, returns static int[8] (32 bytes)
+unsigned int *ComputeSHA256(unsigned char*data, int dataSize); // Compute SHA256 hash code, returns static int[8] (32 bytes)
 
 ### // Automation events functionality
+
 AutomationEventList LoadAutomationEventList(const char *fileName); // Load automation events list from file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS
 
 void UnloadAutomationEventList(AutomationEventList list);   // Unload automation events list from file
@@ -368,7 +381,9 @@ void StopAutomationEventRecording(void);                    // Stop recording au
 void PlayAutomationEvent(AutomationEvent event);            // Play a recorded automation event
 
 ### // Input Handling Functions (Module: core)
+
 #### // Input-related functions: keyboard
+
 bool IsKeyPressed(int key);                             // Check if a key has been pressed once
 
 bool IsKeyPressedRepeat(int key);                       // Check if a key has been pressed again
@@ -411,6 +426,7 @@ int SetGamepadMappings(const char *mappings);           // Set internal gamepad 
 void SetGamepadVibration(int gamepad, float leftMotor, float rightMotor, float duration); // Set gamepad vibration for both motors (duration in seconds)
 
 #### // Input-related functions: mouse
+
 bool IsMouseButtonPressed(int button);                  // Check if a mouse button has been pressed once
 
 bool IsMouseButtonDown(int button);                     // Check if a mouse button is being pressed
@@ -440,6 +456,7 @@ Vector2 GetMouseWheelMoveV(void);                       // Get mouse wheel movem
 void SetMouseCursor(int cursor);                        // Set mouse cursor
 
 #### // Input-related functions: touch
+
 int GetTouchX(void);                                    // Get touch position X for touch point 0 (relative to screen size)
 
 int GetTouchY(void);                                    // Get touch position Y for touch point 0 (relative to screen size)
@@ -452,7 +469,7 @@ int GetTouchPointCount(void);                           // Get number of touch p
 
 ## //(Module: rgestures)
 
-### //Gestures and Touch Handling Functions 
+### //Gestures and Touch Handling Functions
 
 void SetGesturesEnabled(unsigned int flags);            // Enable a set of gestures using flags
 
@@ -471,6 +488,7 @@ Vector2 GetGesturePinchVector(void);                    // Get gesture pinch del
 float GetGesturePinchAngle(void);                       // Get gesture pinch angle
 
 ## //(Module: rcamera)
+
 ### // Camera System Functions
 
 void UpdateCamera(Camera *camera, int mode);            // Update camera position for selected mode
@@ -489,6 +507,7 @@ Texture2D GetShapesTexture(void);                 // Get texture that is used fo
 Rectangle GetShapesTextureRectangle(void);        // Get texture source rectangle that is used for shapes drawing
 
 ### // Basic shapes drawing functions
+
 void DrawPixel(int posX, int posY, Color color);                                                   // Draw a pixel using geometry [Can be slow, use with care]
 
 void DrawPixelV(Vector2 position, Color color);                                                    // Draw a pixel using geometry (Vector version) [Can be slow, use with care]
@@ -570,6 +589,7 @@ void DrawPolyLines(Vector2 center, int sides, float radius, float rotation, Colo
 void DrawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color); // Draw a polygon outline of n sides with extended parameters
 
 ### // Splines drawing functions
+
 void DrawSplineLinear(const Vector2 *points, int pointCount, float thick, Color color);            // Draw spline: Linear, minimum 2 points
 
 void DrawSplineBasis(const Vector2 *points, int pointCount, float thick, Color color);             // Draw spline: B-Spline, minimum 4 points
@@ -591,6 +611,7 @@ void DrawSplineSegmentBezierQuadratic(Vector2 p1, Vector2 c2, Vector2 p3, float 
 void DrawSplineSegmentBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float thick, Color color); // Draw spline segment: Cubic Bezier, 2 points, 2 control points
 
 ### // Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
+
 Vector2 GetSplinePointLinear(Vector2 startPos, Vector2 endPos, float t);                           // Get (evaluate) spline point: Linear
 
 Vector2 GetSplinePointBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t);              // Get (evaluate) spline point: B-Spline
@@ -602,6 +623,7 @@ Vector2 GetSplinePointBezierQuad(Vector2 p1, Vector2 c2, Vector2 p3, float t);  
 Vector2 GetSplinePointBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t);        // Get (evaluate) spline point: Cubic Bezier
 
 ### // Basic shapes collision detection functions
+
 bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2);                                           // Check collision between two rectangles
 
 bool CheckCollisionCircles(Vector2 center1, float radius1, Vector2 center2, float radius2);        // Check collision between two circles
@@ -628,17 +650,17 @@ Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2);                      
 
 ### // Image loading functions
 
-**// NOTE: These functions do not require GPU access**
+// NOTE: These functions do not require GPU access
 
 Image LoadImage(const char *fileName);                                                             // Load image from file into CPU memory (RAM)
 
 Image LoadImageRaw(const char *fileName, int width, int height, int format, int headerSize);       // Load image from RAW file data
 
-Image LoadImageAnim(const char *fileName, int *frames);                                            // Load image sequence from file (frames appended to image.data)
+Image LoadImageAnim(const char *fileName, int*frames);                                            // Load image sequence from file (frames appended to image.data)
 
-Image LoadImageAnimFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int *frames); // Load image sequence from memory buffer
+Image LoadImageAnimFromMemory(const char *fileType, const unsigned char*fileData, int dataSize, int *frames); // Load image sequence from memory buffer
 
-Image LoadImageFromMemory(const char *fileType, const unsigned char *fileData, int dataSize);      // Load image from memory buffer, fileType refers to extension: i.e. '.png'
+Image LoadImageFromMemory(const char *fileType, const unsigned char*fileData, int dataSize);      // Load image from memory buffer, fileType refers to extension: i.e. '.png'
 
 Image LoadImageFromTexture(Texture2D texture);                                                     // Load image from GPU texture data
 
@@ -650,7 +672,7 @@ void UnloadImage(Image image);                                                  
 
 bool ExportImage(Image image, const char *fileName);                                               // Export image data to file, returns true on success
 
-unsigned char *ExportImageToMemory(Image image, const char *fileType, int *fileSize);              // Export image to memory buffer, memory must be MemFree()
+unsigned char *ExportImageToMemory(Image image, const char*fileType, int *fileSize);              // Export image to memory buffer, memory must be MemFree()
 
 bool ExportImageAsCode(Image image, const char *fileName);                                         // Export image as code file defining an array of bytes, returns true on success
 
@@ -675,6 +697,7 @@ Image GenImageCellular(int width, int height, int tileSize);                    
 Image GenImageText(int width, int height, const char *text);                                       // Generate image: grayscale image from text data
 
 ### // Image manipulation functions
+
 Image ImageCopy(Image image);                                                                      // Create an image duplicate (useful for transformations)
 
 Image ImageFromImage(Image image, Rectangle rec);                                                  // Create an image from another image piece
@@ -701,7 +724,7 @@ void ImageAlphaPremultiply(Image *image);                                       
 
 void ImageBlurGaussian(Image *image, int blurSize);                                                // Apply Gaussian blur using a box blur approximation
 
-void ImageKernelConvolution(Image *image, const float *kernel, int kernelSize);                    // Apply custom square convolution kernel to image
+void ImageKernelConvolution(Image *image, const float*kernel, int kernelSize);                    // Apply custom square convolution kernel to image
 
 void ImageResize(Image *image, int newWidth, int newHeight);                                       // Resize image (Bicubic scaling algorithm)
 
@@ -737,7 +760,7 @@ void ImageColorReplace(Image *image, Color color, Color replace);               
 
 Color *LoadImageColors(Image image);                                                               // Load color data from image as a Color array (RGBA - 32bit)
 
-Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorCount);                         // Load colors palette from image as a Color array (RGBA - 32bit)
+Color *LoadImagePalette(Image image, int maxPaletteSize, int*colorCount);                         // Load colors palette from image as a Color array (RGBA - 32bit)
 
 void UnloadImageColors(Color *colors);                                                             // Unload color data loaded with LoadImageColors()
 
@@ -749,7 +772,7 @@ Color GetImageColor(Image image, int x, int y);                                 
 
 ### // Image drawing functions
 
-**// NOTE: Image software-rendering functions (CPU)**
+// NOTE: Image software-rendering functions (CPU)
 
 void ImageClearBackground(Image *dst, Color color);                                                // Clear image background with given color
 
@@ -785,19 +808,19 @@ void ImageDrawTriangleEx(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c
 
 void ImageDrawTriangleLines(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color);          // Draw triangle outline within an image
 
-void ImageDrawTriangleFan(Image *dst, const Vector2 *points, int pointCount, Color color);         // Draw a triangle fan defined by points within an image (first vertex is the center)
+void ImageDrawTriangleFan(Image *dst, const Vector2*points, int pointCount, Color color);         // Draw a triangle fan defined by points within an image (first vertex is the center)
 
-void ImageDrawTriangleStrip(Image *dst, const Vector2 *points, int pointCount, Color color);       // Draw a triangle strip defined by points within an image
+void ImageDrawTriangleStrip(Image *dst, const Vector2*points, int pointCount, Color color);       // Draw a triangle strip defined by points within an image
 
 void ImageDraw(Image *dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint);             // Draw a source image within a destination image (tint applied to source)
 
-void ImageDrawText(Image *dst, const char *text, int posX, int posY, int fontSize, Color color);   // Draw text (using default font) within an image (destination)
+void ImageDrawText(Image *dst, const char*text, int posX, int posY, int fontSize, Color color);   // Draw text (using default font) within an image (destination)
 
-void ImageDrawTextEx(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
+void ImageDrawTextEx(Image *dst, Font font, const char*text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
 
 ### // Texture loading functions
 
-**// NOTE: These functions require GPU access**
+// NOTE: These functions require GPU access
 
 Texture2D LoadTexture(const char *fileName);                                                       // Load texture from file into GPU memory (VRAM)
 
@@ -820,6 +843,7 @@ void UpdateTexture(Texture2D texture, const void *pixels);                      
 void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data (pixels and rec should fit in texture)
 
 ### // Texture configuration functions
+
 void GenTextureMipmaps(Texture2D *texture);                                                        // Generate GPU mipmaps for a texture
 
 void SetTextureFilter(Texture2D texture, int filter);                                              // Set texture scaling filter mode
@@ -827,6 +851,7 @@ void SetTextureFilter(Texture2D texture, int filter);                           
 void SetTextureWrap(Texture2D texture, int wrap);                                                  // Set texture wrapping mode
 
 ### // Texture drawing functions
+
 void DrawTexture(Texture2D texture, int posX, int posY, Color tint);                               // Draw a Texture2D
 
 void DrawTextureV(Texture2D texture, Vector2 position, Color tint);                                // Draw a Texture2D with position defined as Vector2
@@ -840,6 +865,7 @@ void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2
 void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint); // Draws a texture (or part of it) that stretches or shrinks nicely
 
 ### // Color/pixel related functions
+
 bool ColorIsEqual(Color col1, Color col2);                            // Check if two colors are equal
 
 Color Fade(Color color, float alpha);                                 // Get color with alpha applied, alpha goes from 0.0f to 1.0f
@@ -882,15 +908,15 @@ Font GetFontDefault(void);                                                      
 
 Font LoadFont(const char *fileName);                                                  // Load font from file into GPU memory (VRAM)
 
-Font LoadFontEx(const char *fileName, int fontSize, const int *codepoints, int codepointCount); // Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to
+Font LoadFontEx(const char *fileName, int fontSize, const int*codepoints, int codepointCount); // Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to
 
 Font LoadFontFromImage(Image image, Color key, int firstChar);                        // Load font from Image (XNA style)
 
-Font LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, const int *codepoints, int codepointCount); // Load font from memory buffer, fileType refers
+Font LoadFontFromMemory(const char *fileType, const unsigned char*fileData, int dataSize, int fontSize, const int *codepoints, int codepointCount); // Load font from memory buffer, fileType refers
 
 bool IsFontValid(Font font);                                                          // Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 
-GlyphInfo *LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, const int *codepoints, int codepointCount, int type, int *glyphCount); // Load font data for further use
+GlyphInfo *LoadFontData(const unsigned char*fileData, int dataSize, int fontSize, const int *codepoints, int codepointCount, int type, int*glyphCount); // Load font data for further use
 
 Image GenImageFontAtlas(const GlyphInfo *glyphs, Rectangle **glyphRecs, int glyphCount, int fontSize, int padding, int packMethod); // Generate image font atlas using chars info
 
@@ -932,78 +958,78 @@ Rectangle GetGlyphAtlasRec(Font font, int codepoint);                           
 
 ### // Text codepoints management functions (unicode characters)
 
-char *LoadUTF8(const int *codepoints, int length);                                    // Load UTF-8 text encoded from codepoints array
+char *LoadUTF8(const int*codepoints, int length);                                    // Load UTF-8 text encoded from codepoints array
 
 void UnloadUTF8(char *text);                                                          // Unload UTF-8 text encoded from codepoints array
 
-int *LoadCodepoints(const char *text, int *count);                                    // Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
+int *LoadCodepoints(const char*text, int *count);                                    // Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
 
 void UnloadCodepoints(int *codepoints);                                               // Unload codepoints data from memory
 
 int GetCodepointCount(const char *text);                                              // Get total number of codepoints in a UTF-8 encoded string
 
-int GetCodepoint(const char *text, int *codepointSize);                               // Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+int GetCodepoint(const char *text, int*codepointSize);                               // Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
-int GetCodepointNext(const char *text, int *codepointSize);                           // Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+int GetCodepointNext(const char *text, int*codepointSize);                           // Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
-int GetCodepointPrevious(const char *text, int *codepointSize);                       // Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+int GetCodepointPrevious(const char *text, int*codepointSize);                       // Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 
-const char *CodepointToUTF8(int codepoint, int *utf8Size);                            // Encode one codepoint into UTF-8 byte array (array length returned as parameter)
+const char *CodepointToUTF8(int codepoint, int*utf8Size);                            // Encode one codepoint into UTF-8 byte array (array length returned as parameter)
 
 ### // Text strings management functions (no UTF-8 strings, only byte chars)
 
 **// WARNING 1: Most of these functions use internal static buffers[], it's recommended to store returned data on user-side for re-use
 // WARNING 2: Some functions allocate memory internally for the returned strings, those strings must be freed by user using MemFree()**
 
-char **LoadTextLines(const char *text, int *count);                                   // Load text as separate lines ('\n')
+char **LoadTextLines(const char *text, int*count);                                   // Load text as separate lines ('\n')
 
 void UnloadTextLines(char **text, int lineCount);                                     // Unload text lines
-int TextCopy(char *dst, const char *src);                                             // Copy one string to another, returns bytes copied
+int TextCopy(char *dst, const char*src);                                             // Copy one string to another, returns bytes copied
 
-bool TextIsEqual(const char *text1, const char *text2);                               // Check if two text string are equal
+bool TextIsEqual(const char *text1, const char*text2);                               // Check if two text string are equal
 
 unsigned int TextLength(const char *text);                                            // Get text length, checks for '\0' ending
 
-const char *TextFormat(const char *text, ...);                                        // Text formatting with variables (sprintf() style)
+const char *TextFormat(const char*text, ...);                                        // Text formatting with variables (sprintf() style)
 
-const char *TextSubtext(const char *text, int position, int length);                  // Get a piece of a text string
+const char *TextSubtext(const char*text, int position, int length);                  // Get a piece of a text string
 
-const char *TextRemoveSpaces(const char *text);                                       // Remove text spaces, concat words
+const char *TextRemoveSpaces(const char*text);                                       // Remove text spaces, concat words
 
-char *GetTextBetween(const char *text, const char *begin, const char *end);           // Get text between two strings
+char *GetTextBetween(const char*text, const char *begin, const char*end);           // Get text between two strings
 
-char *TextReplace(const char *text, const char *search, const char *replacement);     // Replace text string with new string
+char *TextReplace(const char*text, const char *search, const char*replacement);     // Replace text string with new string
 
-char *TextReplaceAlloc(const char *text, const char *search, const char *replacement); // Replace text string with new string, memory must be MemFree()
+char *TextReplaceAlloc(const char*text, const char *search, const char*replacement); // Replace text string with new string, memory must be MemFree()
 
-char *TextReplaceBetween(const char *text, const char *begin, const char *end, const char *replacement); // Replace text between two specific strings
+char *TextReplaceBetween(const char*text, const char *begin, const char*end, const char *replacement); // Replace text between two specific strings
 
-char *TextReplaceBetweenAlloc(const char *text, const char *begin, const char *end, const char *replacement); // Replace text between two specific strings, memory must be MemFree()
+char *TextReplaceBetweenAlloc(const char*text, const char *begin, const char*end, const char *replacement); // Replace text between two specific strings, memory must be MemFree()
 
-char *TextInsert(const char *text, const char *insert, int position);                 // Insert text in a defined byte position
+char *TextInsert(const char*text, const char *insert, int position);                 // Insert text in a defined byte position
 
-char *TextInsertAlloc(const char *text, const char *insert, int position);            // Insert text in a defined byte position, memory must be MemFree()
+char *TextInsertAlloc(const char*text, const char *insert, int position);            // Insert text in a defined byte position, memory must be MemFree()
 
-char *TextJoin(char **textList, int count, const char *delimiter);                    // Join text strings with delimiter
+char *TextJoin(char **textList, int count, const char*delimiter);                    // Join text strings with delimiter
 
-char **TextSplit(const char *text, char delimiter, int *count);                       // Split text into multiple strings, using MAX_TEXTSPLIT_COUNT static strings
+char **TextSplit(const char *text, char delimiter, int*count);                       // Split text into multiple strings, using MAX_TEXTSPLIT_COUNT static strings
 
-void TextAppend(char *text, const char *append, int *position);                       // Append text at specific position and move cursor
+void TextAppend(char *text, const char*append, int *position);                       // Append text at specific position and move cursor
 
-int TextFindIndex(const char *text, const char *search);                              // Find first text occurrence within a string, -1 if not found
+int TextFindIndex(const char *text, const char*search);                              // Find first text occurrence within a string, -1 if not found
 
-char *TextToUpper(const char *text);                                                  // Get upper case version of provided string
+char *TextToUpper(const char*text);                                                  // Get upper case version of provided string
 
-char *TextToLower(const char *text);                                                  // Get lower case version of provided string
+char *TextToLower(const char*text);                                                  // Get lower case version of provided string
 
-char *TextToPascal(const char *text);                                                 // Get Pascal case notation version of provided string
+char *TextToPascal(const char*text);                                                 // Get Pascal case notation version of provided string
 
-char *TextToSnake(const char *text);                                                  // Get Snake case notation version of provided string
+char *TextToSnake(const char*text);                                                  // Get Snake case notation version of provided string
 
-char *TextToCamel(const char *text);                                                  // Get Camel case notation version of provided string
+char *TextToCamel(const char*text);                                                  // Get Camel case notation version of provided string
 
 int TextToInteger(const char *text);                                                  // Get integer value from text
-float TextToFloat(const char *text);                                                  // Get float value from text
+float TextToFloat(const char*text);                                                  // Get float value from text
 
 ## //module: rmodels
 
@@ -1068,6 +1094,7 @@ void UnloadModel(Model model);                                                  
 BoundingBox GetModelBoundingBox(Model model);                                         // Compute model bounding box limits (considers all meshes)
 
 #### // Model drawing functions
+
 void DrawModel(Model model, Vector3 position, float scale, Color tint);               // Draw a model (with texture if set)
 
 void DrawModelEx(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint); // Draw a model with extended parameters
@@ -1085,6 +1112,7 @@ void DrawBillboardRec(Camera camera, Texture2D texture, Rectangle source, Vector
 void DrawBillboardPro(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint); // Draw a billboard texture define
 
 #### // Mesh management functions
+
 void UploadMesh(Mesh *mesh, bool dynamic);                                            // Upload mesh vertex data in GPU and provide VAO/VBO ids
 
 void UpdateMeshBuffer(Mesh mesh, int index, const void *data, int dataSize, int offset); // Update mesh vertex data in GPU for a specific buffer index
@@ -1104,6 +1132,7 @@ bool ExportMesh(Mesh mesh, const char *fileName);                               
 bool ExportMeshAsCode(Mesh mesh, const char *fileName);                               // Export mesh as code file (.h) defining multiple arrays of vertex attributes
 
 #### // Mesh generation functions
+
 Mesh GenMeshPoly(int sides, float radius);                                            // Generate polygonal mesh
 
 Mesh GenMeshPlane(float width, float length, int resX, int resZ);                     // Generate plane mesh (with subdivisions)
@@ -1128,7 +1157,7 @@ Mesh GenMeshCubicmap(Image cubicmap, Vector3 cubeSize);                         
 
 #### // Material loading/unloading functions
 
-Material *LoadMaterials(const char *fileName, int *materialCount);                    // Load materials from model file
+Material *LoadMaterials(const char*fileName, int *materialCount);                    // Load materials from model file
 
 Material LoadMaterialDefault(void);                                                   // Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
 
@@ -1142,7 +1171,7 @@ void SetModelMeshMaterial(Model *model, int meshId, int materialId);            
 
 #### // Model animations loading/unloading functions
 
-ModelAnimation *LoadModelAnimations(const char *fileName, int *animCount);            // Load model animations from file
+ModelAnimation *LoadModelAnimations(const char*fileName, int *animCount);            // Load model animations from file
 
 void UpdateModelAnimation(Model model, ModelAnimation anim, float frame);             // Update model animation pose (vertex buffers and bone matrices)
 
@@ -1185,9 +1214,10 @@ void SetMasterVolume(float volume);                             // Set master vo
 float GetMasterVolume(void);                                    // Get master volume (listener)
 
 ### // Wave/Sound loading/unloading functions
+
 Wave LoadWave(const char *fileName);                            // Load wave data from file
 
-Wave LoadWaveFromMemory(const char *fileType, const unsigned char *fileData, int dataSize); // Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
+Wave LoadWaveFromMemory(const char *fileType, const unsigned char*fileData, int dataSize); // Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
 
 bool IsWaveValid(Wave wave);                                    // Checks if wave data is valid (data loaded and parameters)
 
@@ -1240,9 +1270,10 @@ float *LoadWaveSamples(Wave wave);                              // Load samples 
 void UnloadWaveSamples(float *samples);                         // Unload samples data loaded with LoadWaveSamples()
 
 ### // Music management functions
+
 Music LoadMusicStream(const char *fileName);                    // Load music stream from file
 
-Music LoadMusicStreamFromMemory(const char *fileType, const unsigned char *data, int dataSize); // Load music stream from data
+Music LoadMusicStreamFromMemory(const char *fileType, const unsigned char*data, int dataSize); // Load music stream from data
 
 bool IsMusicValid(Music music);                                 // Checks if a music stream is valid (context and buffers initialized)
 
@@ -1273,6 +1304,7 @@ float GetMusicTimeLength(Music music);                          // Get music tim
 float GetMusicTimePlayed(Music music);                          // Get current music time played (in seconds)
 
 ### // AudioStream management functions
+
 AudioStream LoadAudioStream(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels); // Load audio stream (to stream raw audio pcm data)
 
 bool IsAudioStreamValid(AudioStream stream);                    // Checks if an audio stream is valid (buffers initialized)
@@ -1404,7 +1436,7 @@ colors
 
 #define MAROON     (Color){ 190, 33, 55, 255 }     // Maroon
 
-#define GREEN      (Color){ 0, 228, 48, 255 }      // Green
+# efine GREEN      (Color){ 0, 228, 48, 255 }      // Green
 
 #define LIME       (Color){ 0, 158, 47, 255 }      // Lime
 
@@ -1437,6 +1469,7 @@ colors
 #define MAGENTA    (Color){ 255, 0, 255, 255 }     // Magenta
 
 #define RAYWHITE   (Color){ 245, 245, 245, 255 }   // My own White (raylib logo)
+
 Other cheatsheets
 
 raylib quick reference card - Copyright (c) 2013-2026 Ramon Santamaria (@raysan5)
