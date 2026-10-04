@@ -13,7 +13,7 @@ int main(){
 
 	ToggleFullscreen(); //para colocar em tela cheia
 
-	Color cor = (Color){ 0, 0, 0, 255 };
+	Color cor = (Color){ 0, 0, 0, 255 }; //definindo a cor da plataforma como preto
 
 	//Pegando os tamanhos da tela
 	int Screen_width = GetScreenWidth();
