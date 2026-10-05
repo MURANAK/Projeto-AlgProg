@@ -346,17 +346,18 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
     LDLIBS = $(RAYLIB_RELEASE_PATH)/libraylib.web.a
 endif
 
-# Define a recursive wildcard function
-rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
-
-# Define all source files required
+# Project layout
 SRC_DIR = src
-OBJ_DIR = obj
+INC_DIR = include
+OBJ_DIR = obj-$(BUILD_MODE)
 
-# Define all object files from source files
-SRC = $(call rwildcard, ./, *.c, *.h)
-#OBJS = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-OBJS ?= $(filter %.c,$(SRC))
+# Project headers
+INCLUDE_PATHS += -I$(INC_DIR)
+
+# All .c files in src/, the object files generated from them and all headers
+SRC     = $(wildcard $(SRC_DIR)/*.c)
+OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+HEADERS = $(wildcard $(INC_DIR)/*.h)
 
 # For Android platform we call a custom Makefile.Android
 ifeq ($(PLATFORM),PLATFORM_ANDROID)
@@ -368,19 +369,19 @@ else
 endif
 
 # Default target entry
-# NOTE: We call this Makefile target or Makefile.Android target
 all:
 	$(MAKE) $(MAKEFILE_PARAMS)
 
-# Project target defined by PROJECT_NAME
+# Link
 $(PROJECT_NAME): $(OBJS)
 	$(CC) -o $(PROJECT_NAME)$(EXT) $(OBJS) $(CFLAGS) $(INCLUDE_PATHS) $(LDFLAGS) $(LDLIBS) -D$(PLATFORM)
 
-# Compile source files
-# NOTE: This pattern will compile every module defined on $(OBJS)
-#%.o: %.c
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+# Compile each .c into the object folder (rebuilds if any header changes)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE_PATHS) -D$(PLATFORM)
+
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
 
 # Compile and run the project
 run: all
@@ -394,8 +395,17 @@ endif
 clean:
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
-		del *.o *.exe /s
+		-del /q $(PROJECT_NAME).exe
+		-if exist obj-DEBUG rmdir /s /q obj-DEBUG
+		-if exist obj-RELEASE rmdir /s /q obj-RELEASE
     endif
+    ifeq ($(PLATFORM_OS),LINUX)
+	rm -rf obj-DEBUG obj-RELEASE $(PROJECT_NAME)
+    endif
+    ifeq ($(PLATFORM_OS),OSX)
+		rm -rf obj-DEBUG obj-RELEASE $(PROJECT_NAME)
+    endif
+endif
     ifeq ($(PLATFORM_OS),LINUX)
 	find -type f -executable | xargs file -i | grep -E 'x-object|x-archive|x-sharedlib|x-executable' | rev | cut -d ':' -f 2- | rev | xargs rm -fv
     endif
@@ -403,7 +413,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
 		find . -type f -perm +ugo+x -delete
 		rm -f *.o
     endif
-endif
+
 ifeq ($(PLATFORM),PLATFORM_RPI)
 	find . -type f -executable -delete
 	rm -fv *.o
