@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-#define TAM 20
+#define TAM 128
 
 int main(){
 
