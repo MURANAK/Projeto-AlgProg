@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-#define TAM 128
+#define TAM 50
 
 int main(){
 
@@ -63,6 +63,16 @@ int main(){
 			}
 		}
 	}
+
+	//Para impedir que o jogardor saia da tela
+	if(player.x<0)
+		player.x = 0;
+	if(player.y<0)
+		player.y = 0;
+	if((player.x+player.width)>Screen_width)
+		player.x = Screen_width - player.width;
+	if((player.y+player.height)>Screen_height)
+		player.y = Screen_height - player.height;
 
 	if(!CheckCollisionRecs(player, plataforma)) cor = (Color){ 0, 0, 0, 255 }; //plataforma fica preta quando nao ha colisao
 
