@@ -38,10 +38,12 @@ int main(){
 	for(int i=0; i<LIN; i++){
 		for(int j=0; j<COL; j++){
 			/*
-			Sabendo que a posicao de um objeto eh definida a partir de seu canto superior esquerdo
-			Eu calculo onde o bloco deve estar multiplicando o seu indice pelo tamanho correspondente
-			do bloco e adiciono mais a metade desse tamanho para centralizar o bloco
+			*Sabendo que a posicao de um objeto eh definida a partir de seu canto superior esquerdo
+			*Eu calculo onde o bloco deve estar multiplicando o seu indice pelo tamanho correspondente
+			*do bloco e adiciono mais a metade desse tamanho para centralizar o bloco
 			*/
+
+			//? sera que precisa saber o centro do sprite para centralizar, ja que o sprite eh irregular
 
 			if(Mapa[i][j] == 1) //1 eh verde
 				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, GREEN);
