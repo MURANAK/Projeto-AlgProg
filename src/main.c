@@ -2,75 +2,57 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define LIN 4
+#define COL 5
 
-#define TAM 20
 
 int main(){
 
-    InitWindow(20, 20, "Teste"); //Inicializa janela, com tamanho aleatório e titulo
+    InitWindow(20, 20, "Teste de leitura de matriz"); //Inicializa janela, com tamanho aleatório e titulo
     SetTargetFPS(60);// Ajusta a janela para 60 frames por segundo
 
 
 	ToggleFullscreen(); //para colocar em tela cheia
 
-	Color cor = (Color){ 0, 0, 0, 255 }; //definindo a cor da plataforma como preto
+	//definindo a altura e largura da tela
+	float ScreenH = GetScreenHeight();
+	float ScreenW = GetScreenWidth();
 
-	//Pegando os tamanhos da tela
-	int Screen_width = GetScreenWidth();
-	int Screen_height = GetScreenHeight();
+	//Declarando uma matriz para ser o mapa
+	int Mapa[LIN][COL] = {1, 2, 3 , 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
 
-	//Inicializando o jogador como um struct de retangulo centralizado na tela e pegando o centro dele
-	Rectangle player = {(float)Screen_width/2.0, (float)Screen_height/2.0, (float)TAM, (float)TAM};
-	Vector2 centro_player = {player.x+(player.width/2), player.y+(player.height/2)};
+	//Divindo o mapa em blocos
+	float BlocoH = ScreenH / (float)LIN;
+	float BlocoW = ScreenW / (float)COL;
 	
-	//Inicializando uma plataforma e pehando o centro dela
-	Rectangle plataforma = {centro_player.x, centro_player.y+50.0, 200.0, 50.0};
-	Vector2 centro_plataforma = {plataforma.x+(plataforma.width/2), plataforma.y+(plataforma.height/2)};
-
-	float vel = 5; //definindo a velocinade do jogador
 
     //Este laco repete enquanto a janela nao for fechada
     //Utilizamos ele para atualizar o estado do programa / jogo
     while (!WindowShouldClose())
     {
-	// Trata entrada do usuario e atualiza estado do jogo
-	if (IsKeyDown(KEY_RIGHT)) {
-	    player.x += vel;
-	}
-	if (IsKeyDown(KEY_LEFT)) {
-	    player.x -= vel;
-	}
-	if (IsKeyDown(KEY_UP)) {
-	    player.y -= vel;
-	}
-	if (IsKeyDown(KEY_DOWN)) {
-	    player.y += vel;
-	}
-
-	// atualizando a posicao do centro do jogador
-	centro_player.x = player.x+(player.width/2);
-	centro_player.y = player.y+(player.height/2);
-
-	if(CheckCollisionRecs(player, plataforma)){ //so ve se os cantos superiores esquerdos de cada retangulo estao sobrepostos
-		if(player.x + player.width > plataforma.x){ //condicao de colisao em todos os lados
-			cor = (Color){ 230, 41, 55, 255 };  //plataforma fica vermelha quando ha sobreposicao
-
-			if(centro_player.y<centro_plataforma.y){ //vindo de cima
-				player.y = plataforma.y - player.height;
-			}
-			if(centro_player.y>centro_plataforma.y){ //vindo de baixo
-				player.y = plataforma.y + plataforma.height;
-			}
-		}
-	}
-
-	if(!CheckCollisionRecs(player, plataforma)) cor = (Color){ 0, 0, 0, 255 }; //plataforma fica preta quando nao ha colisao
+	 
 
 	// Atualiza o que eh mostrado na tela a partir do estado do jogo
 	BeginDrawing(); //Inicia o ambiente de desenho na tela
 	ClearBackground(RAYWHITE); //Limpa a tela e define cor de fundo
-	DrawRectangleRec(player, GREEN); //desenhando o jogador
-	DrawRectangleRec(plataforma, cor);//desenhando a plataforma
+	for(int i=0; i<LIN; i++){
+		for(int j=0; j<COL; j++){
+			/*
+			Sabendo que a posicao de um objeto eh definida a partir de seu canto superior esquerdo
+			Eu calculo onde o bloco deve estar multiplicando o seu indice pelo tamanho correspondente
+			do bloco e adiciono mais a metade desse tamanho para centralizar o bloco
+			*/
+
+			if(Mapa[i][j] == 1) //1 eh verde
+				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, GREEN);
+			else if(Mapa[i][j] == 2) //2 eh vermelho
+				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, RED);
+			else if(Mapa[i][j] == 3) //3 eh azul
+				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, BLUE);
+			else //4 eh amarelo
+				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, GOLD);
+		}
+	}
 	EndDrawing(); //Finaliza o ambiente de desenho na tela
     }
 
