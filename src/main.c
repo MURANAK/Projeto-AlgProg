@@ -1,14 +1,16 @@
 #include "raylib.h"
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
-#define LIN 4
-#define COL 5
+#define LIN 30
+#define COL 30
+#define TAM 5 //tamanho dos blocos coloridos
 
 
 int main(){
 
-    InitWindow(20, 20, "Teste de leitura de matriz"); //Inicializa janela, com tamanho aleatório e titulo
+    InitWindow(800, 600, "Teste de leitura de matriz"); //Inicializa janela, com tamanho aleatório e titulo
     SetTargetFPS(60);// Ajusta a janela para 60 frames por segundo
 
 
@@ -18,12 +20,47 @@ int main(){
 	float ScreenH = GetScreenHeight();
 	float ScreenW = GetScreenWidth();
 
-	//Declarando uma matriz para ser o mapa
-	int Mapa[LIN][COL] = {1, 2, 3 , 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
+	//Declarando uma matriz para ser o mapa e preenchendo com a matriz exemplo dos criterios
+	char Mapa[LIN][COL] = {
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'F', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', 'D', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t'},
+    {'\t', '\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', 'E', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D'},
+    {'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H'},
+    {'\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H'},
+    {'\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', 'S'},
+    {'\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', 'E', '\t', '\t', '\t', '\t'},
+    {'\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', '\t', '\t', '\t', 'S', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', 'D', '\t', '\t', '\t', '\t', 'E', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t'},
+    {'\t', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', '\t'},
+    {'\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t'},
+    {'\t', 'S', '\t', '\t', '\t', 'P', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t'},
+    {'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'}
+};
 
 	//Divindo o mapa em blocos
-	float BlocoH = ScreenH / (float)LIN;
-	float BlocoW = ScreenW / (float)COL;
+	float BlocoY = ScreenH / (float)LIN;
+	float BlocoX = ScreenW / (float)COL;
+
+	//Definindo o centro dos blocos
+	float C_BlocoY = BlocoY/2;
+	float C_BlocoX = BlocoX/2;
 	
 
     //Este laco repete enquanto a janela nao for fechada
@@ -35,24 +72,49 @@ int main(){
 	// Atualiza o que eh mostrado na tela a partir do estado do jogo
 	BeginDrawing(); //Inicia o ambiente de desenho na tela
 	ClearBackground(RAYWHITE); //Limpa a tela e define cor de fundo
-	for(int i=0; i<LIN; i++){
-		for(int j=0; j<COL; j++){
+	for(int y=0; y<LIN; y++){
+		for(int x=0; x<COL; x++){
 			/*
 			*Sabendo que a posicao de um objeto eh definida a partir de seu canto superior esquerdo
-			*Eu calculo onde o bloco deve estar multiplicando o seu indice pelo tamanho correspondente
-			*do bloco e adiciono mais a metade desse tamanho para centralizar o bloco
+			*Eu calculo onde o objeto deve estar multiplicando o seu indice de linha (x) pelo
+			*comprimento do bloco da grade formada (BlocoX) e o seu indice de coluna (y) pela
+			*altura do bloco (BlocoY)
 			*/
 
-			//? sera que precisa saber o centro do sprite para centralizar, ja que o sprite eh irregular
+			//! Os objetos nao estao centralizados, pois tem o mesmo tamanho dos blocos
+			//! Foi usado o struct Vector2, pois seus argumentos sao do tipo float
+			//! Foi usado o DrawRectangleV, pois seus paramametros sao do tipo float
 
-			if(Mapa[i][j] == 1) //1 eh verde
-				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, GREEN);
-			else if(Mapa[i][j] == 2) //2 eh vermelho
-				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, RED);
-			else if(Mapa[i][j] == 3) //3 eh azul
-				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, BLUE);
-			else //4 eh amarelo
-				DrawRectangle(((j*BlocoW)+(BlocoW/2)), ((i*BlocoH)+(BlocoH/2)), 20, 20, GOLD);
+			Vector2 pos;
+			pos.x = (x*BlocoX);
+			pos.y = (y*BlocoY);
+
+			Vector2 size;
+			size.x = BlocoX;
+			size.y = BlocoY;
+
+			//? sera que eh possivel mudar o tamanho do sprite de acordo com o tamanho dos blocos?
+			//? sera que precisa de mais de um bloco para desenhar um unico sprite?
+
+			if(Mapa[y][x] == 'Z') //caractere 'Z' na tabela eh plataforma, aqui em preto
+				DrawRectangleV(pos, size, BLACK);
+			else if(Mapa[y][x] == 'S') //caractere 'S' na tabela eh subida de escada, aqui em azul escuro
+				DrawRectangleV(pos, size, DARKBLUE);
+			else if(Mapa[y][x] == 'D') //caractere 'D' na tabela eh descida de escada, aqui em azul claro
+				DrawRectangleV(pos, size, SKYBLUE);
+			else if(Mapa[y][x] == 'H') //caractere 'H' na tabela eh escada para efeito visual, aqui em roxo
+				DrawRectangleV(pos, size, PURPLE);
+			else if(Mapa[y][x] == 'P') //caractere 'P' na tabela eh a posicao inicial do jogador, aqui em verde
+				DrawRectangleV(pos, size, GREEN);
+			else if(Mapa[y][x] == 'F') //caractere 'F' na tabela eh o final da fase, aqui em dourado
+				DrawRectangleV(pos, size, GOLD);
+			else if(Mapa[y][x] == 'E') //caractere ´E´ na tabela eh inimigo, aqui em vermelho
+				DrawRectangleV(pos, size, RED);
+			else //o resto sao espacos vazios, aqui em cinza claro
+				DrawRectangleV(pos, size, LIGHTGRAY);
+			
+			//Para demarcar o centro dos blocos da grid
+			//DrawCircle((x*BlocoX) + C_BlocoX, (y*BlocoY) + C_BlocoY, 5, BLACK);
 		}
 	}
 	EndDrawing(); //Finaliza o ambiente de desenho na tela
