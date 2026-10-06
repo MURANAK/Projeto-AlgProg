@@ -4,6 +4,7 @@
 
 
 #define TAM 50
+#define VEL 5.0f
 
 int main(){
 
@@ -27,7 +28,7 @@ int main(){
 	Rectangle plataforma = {centro_player.x, centro_player.y+50.0, 200.0, 50.0};
 	Vector2 centro_plataforma = {plataforma.x+(plataforma.width/2), plataforma.y+(plataforma.height/2)};
 
-	float vel = 5; //definindo a velocinade do jogador
+	float jump_height = 10;
 
     //Este laco repete enquanto a janela nao for fechada
     //Utilizamos ele para atualizar o estado do programa / jogo
@@ -35,17 +36,19 @@ int main(){
     {
 	// Trata entrada do usuario e atualiza estado do jogo
 	if (IsKeyDown(KEY_RIGHT)) {
-	    player.x += vel;
+	    player.x += VEL;
 	}
 	if (IsKeyDown(KEY_LEFT)) {
-	    player.x -= vel;
+	    player.x -= VEL;
 	}
 	if (IsKeyDown(KEY_UP)) {
-	    player.y -= vel;
+	    player.y -= VEL;
 	}
 	if (IsKeyDown(KEY_DOWN)) {
-	    player.y += vel;
+	    player.y += VEL;
 	}
+
+	
 
 	// atualizando a posicao do centro do jogador
 	centro_player.x = player.x+(player.width/2);
@@ -55,11 +58,22 @@ int main(){
 		if(player.x + player.width > plataforma.x){ //condicao de colisao em todos os lados
 			cor = (Color){ 230, 41, 55, 255 };  //plataforma fica vermelha quando ha sobreposicao
 
-			if(centro_player.y<centro_plataforma.y){ //vindo de cima
-				player.y = plataforma.y - player.height;
+			//esta vindo de alguma lateral
+			if(centro_player.y>plataforma.y && centro_player.y<(plataforma.y+plataforma.height)){
+				if(centro_player.x>centro_plataforma.x) //vindo da direita da plataforma
+					player.x = plataforma.x + plataforma.width;
+				if(centro_player.x<centro_plataforma.x) //vindo da esquerda
+					player.x = plataforma.x - player.width;
 			}
-			if(centro_player.y>centro_plataforma.y){ //vindo de baixo
-				player.y = plataforma.y + plataforma.height;
+
+			//esta vindo de baixo ou de cima
+			else{
+				if(centro_player.y<centro_plataforma.y){ //vindo de cima
+					player.y = plataforma.y - player.height;
+				}
+				if(centro_player.y>centro_plataforma.y){ //vindo de baixo
+					player.y = plataforma.y + plataforma.height;
+				}
 			}
 		}
 	}
