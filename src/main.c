@@ -10,7 +10,7 @@
 
 int main(){
 
-    InitWindow(20, 20, "Teste de leitura de matriz"); //Inicializa janela, com tamanho aleatório e titulo
+    InitWindow(600, 300, "Teste de leitura de matriz"); //Inicializa janela, com tamanho aleatório e titulo
     SetTargetFPS(60);// Ajusta a janela para 60 frames por segundo
 
 
@@ -45,6 +45,20 @@ int main(){
     //Utilizamos ele para atualizar o estado do programa / jogo
     while (!WindowShouldClose())
     {
+		//para tirar e colocar da tela cheia
+		if(IsKeyPressed(KEY_T)){
+			ToggleFullscreen(); //para colocar em tela cheia
+
+			//Refazendo os valores dependentes do tamanho da tela
+			ScreenH = GetScreenHeight();
+			ScreenW = GetScreenWidth();
+
+			BlocoY = ScreenH / (float) LIN;
+			BlocoX = ScreenW / (float) COL;
+
+			C_BlocoY = BlocoY/2;
+			C_BlocoX = BlocoX/2;
+		}
 	 
 
 	// Atualiza o que eh mostrado na tela a partir do estado do jogo
