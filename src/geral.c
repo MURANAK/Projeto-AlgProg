@@ -9,7 +9,3 @@ Vector2 get_center(float width, float heigth){
 
     return centro;
 }
-
-void gerar_mapa(int lin, int col, char map[][col]){
-    
-}

@@ -1,6 +1,9 @@
 //Bibliotecas
 #include "raylib.h"
 #include "player.h"
+#include "ambiente.h"
+#include "mapa.h"
+#include "obstaculos.h"
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
@@ -13,6 +16,9 @@
 #define VEL 5
 #define HEIGHT 20
 #define WIDTH 20
+//do mapa
+#define LIN 30
+#define COL 30
 
 
 
@@ -20,9 +26,52 @@ int main(){
     //inicializações gráficas
     InitWindow(LARGURA, ALTURA, "JOGO");
     SetTargetFPS(60);
+    Vector2 ScreenSize = {GetScreenWidth(), GetScreenHeight()};
 
-    //declaração dos assets
-    Player player = {{LARGURA/2, ALTURA/2}, {WIDTH, HEIGHT}, 1};
+    //declaração dos obejtos
+    Plataforma plataformas[LIN][COL] = {0};
+    Escada escadas[LIN][COL] = {0};
+    Porta portas[2] = {0};
+    Inimigo inimigos[LIN][COL] = {0};
+
+    //Declarando uma matriz para ser o mapa e preenchendo com a matriz exemplo dos criterios
+	char Mapa[LIN][COL] = {
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'F', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', 'D', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t'},
+    {'\t', '\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', 'E', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D'},
+    {'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H'},
+    {'\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H'},
+    {'\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', 'S'},
+    {'\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', 'E', '\t', '\t', '\t', '\t'},
+    {'\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', '\t', '\t', '\t', 'S', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', 'D', '\t', '\t', '\t', '\t', 'E', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t'},
+    {'\t', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', '\t'},
+    {'\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t'},
+    {'\t', 'S', '\t', '\t', '\t', 'P', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t'},
+    {'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
+    {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'}
+    };
+
+    gerar_mapa(ScreenSize, LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
+
+    //declaracao do jogador
+    Player player = {{portas[0].pos.x, portas[0].pos.y}, {ScreenSize.x/COL, ScreenSize.y/LIN}, BROWN, 1};
 
     //loop do jogo
     while(!WindowShouldClose()){
@@ -30,7 +79,8 @@ int main(){
 
         //Atualização da frame
         BeginDrawing();
-        DrawRectangleV(player.pos, player.size, BLACK);
+        desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
+        DrawRectangleV(player.pos, player.size, player.cor);
         ClearBackground(RAYWHITE);
         EndDrawing();
     }
