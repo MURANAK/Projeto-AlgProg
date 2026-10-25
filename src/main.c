@@ -20,15 +20,19 @@
 #define LIN 30
 #define COL 30
 
+//TODO: placar, menu de pause, menu inicial, menu final com os scores, temporizador
 
 
 int main(){
     //inicializações gráficas
     InitWindow(LARGURA, ALTURA, "JOGO");
     SetTargetFPS(60);
+
+    //importante para as funções de gerar e desenhar mapa, guarda a largura e altura da tela
+    //?deixei assim em vez de usar os defines, pra no futuro ser possivel sair e entrar da tela cheia
     Vector2 ScreenSize = {GetScreenWidth(), GetScreenHeight()};
 
-    //declaração dos obejtos
+    //declaração dos objetos
     Plataforma plataformas[LIN][COL] = {0};
     Escada escadas[LIN][COL] = {0};
     Porta portas[2] = {0};
@@ -70,11 +74,12 @@ int main(){
 
     gerar_mapa(ScreenSize, LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
 
-    //declaracao do jogador
+    //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
     Player player = {{portas[0].pos.x, portas[0].pos.y}, {ScreenSize.x/COL, ScreenSize.y/LIN}, BROWN, 1};
 
     //loop do jogo
     while(!WindowShouldClose()){
+        //movimentos
         player_move(&player, VEL);
 
         //Atualização da frame

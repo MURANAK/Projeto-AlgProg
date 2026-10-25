@@ -1,0 +1,1 @@
+//Para funções relacionadas à coisas que podem machucar o jogador(inimigos, projéteis, etc)

@@ -1,8 +1,21 @@
+//Para funções relacionadas ao mapa
 #include "mapa.h"
 #include "ambiente.h"
 #include "obstaculos.h"
 #include "raylib.h"
 
+//!Função de geração do mapa
+/*
+Na geração do mapa, a maioria dos objetos no mapa são definidos dentro de matrizes de tamanhos iguais
+à matriz do mapa. Os atributos de cada objeto são armazenados no mesmo indice que o seu caractere correspondente
+na geração do mapa, dessa forma fica fácil para mim de imaginar tudo como uma única matriz/grade.
+
+Há duas exceções nisso:
+A primeira são as "portas" de inicio e fim de fase. Elas são armanezadas em um vetor de tamanho 2, no qual
+eu decidi arbitrariamente que 0 é o indice da porta de inicio e 1 e o indice da porta final.
+A segunda são os inimigos, que por mais que sejam tratados que nem os objetos do ambiente na geração do mapa
+e na hora de desenhar ele, a posição dos inimigos não vai permanecer estática, mas seu indice vai.
+*/
 void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plats[][col], Porta portas[], Escada escadas[][col], Inimigo inimigos[][col]){
     int i, j;
     Vector2 celula; //as celulas ficticias da tela dividida em grade
@@ -131,6 +144,16 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
         }
     }
 }
+
+//!Função para desenhar o mapa
+/*
+Essa função percorre a matriz do mapa inteira (que eu estou considerando ela como a matriz "principal/única")
+e atualiza a frame de cada um dos itens
+*/
+/*
+?Por enquanto essa função desenha apenas retângulos com o mesmo tamanho das "células"
+?Eu vou deixar pra você decidir como vai realmente desenhar os sprites na tela
+*/
 
 void desenhar_mapa(int lin, int col, char map[][col], Plataforma plats[][col], Porta portas[], Escada escadas[][col], Inimigo inimigos[][col]){
     int i, j;

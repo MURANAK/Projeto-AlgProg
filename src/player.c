@@ -1,3 +1,4 @@
+//Para funções relacionadas ao jogador(movimento, gravidade, etc)
 #include "raylib.h"
 #include "player.h"
 
