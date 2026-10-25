@@ -6,18 +6,12 @@
 
 //!Função de geração do mapa
 /*
-Na geração do mapa, a maioria dos objetos no mapa são definidos dentro de matrizes de tamanhos iguais
-à matriz do mapa. Os atributos de cada objeto são armazenados no mesmo indice que o seu caractere correspondente
-na geração do mapa, dessa forma fica fácil para mim de imaginar tudo como uma única matriz/grade.
-
-Há duas exceções nisso:
-A primeira são as "portas" de inicio e fim de fase. Elas são armanezadas em um vetor de tamanho 2, no qual
-eu decidi arbitrariamente que 0 é o indice da porta de inicio e 1 e o indice da porta final.
-A segunda são os inimigos, que por mais que sejam tratados que nem os objetos do ambiente na geração do mapa
-e na hora de desenhar ele, a posição dos inimigos não vai permanecer estática, mas seu indice vai.
+Nessa geração de mapa, os objetos são todos tratados como vetores unidimensionais que tem como capacidade
+máxima o mapa inteiro. Dessa forma eu tenho eles preenchidos de maneira linear e sequencial, o que pode tornar
+mais fácil de percorrer todos para checar colisões, por exemplo.
 */
-void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plats[][col], Porta portas[], Escada escadas[][col], Inimigo inimigos[][col]){
-    int i, j;
+void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plats[], Porta portas[], Escada escadas[], Inimigo inimigos[]){
+    int i, j, n_plat=0, n_escada=0, n_inimigos=0;
     Vector2 celula; //as celulas ficticias da tela dividida em grade
 
     //dividindo a tela em uma grade
@@ -30,59 +24,67 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
             {
             case 'Z': //caractere 'Z' na tabela eh plataforma, aqui em preto
                 //Definindo posição
-                plats[i][j].pos.x = j*celula.x;
-                plats[i][j].pos.y = i*celula.y;
+                plats[n_plat].pos.x = j*celula.x;
+                plats[n_plat].pos.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                plats[i][j].size.x = celula.x;
-                plats[i][j].size.y = celula.y;
+                plats[n_plat].size.x = celula.x;
+                plats[n_plat].size.y = celula.y;
 
                 //definindo cor e "dureza"
-                plats[i][j].cor = BLACK;
-                plats[i][j].duro = 1;
+                plats[n_plat].cor = BLACK;
+                plats[n_plat].duro = 1;
+
+                n_plat++;
                 
                 break;
                 
             case 'S': //caractere 'S' na tabela eh subida de escada, aqui em azul escuro
                 //Definindo posição
-                escadas[i][j].pos.x = j*celula.x;
-                escadas[i][j].pos.y = i*celula.y;
+                escadas[n_escada].pos.x = j*celula.x;
+                escadas[n_escada].pos.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                escadas[i][j].size.x = celula.x;
-                escadas[i][j].size.y = celula.y;
+                escadas[n_escada].size.x = celula.x;
+                escadas[n_escada].size.y = celula.y;
 
                 //definindo direção e cor
-                escadas[i][j].direcao = 1;
-                escadas[i][j].cor = DARKBLUE;
+                escadas[n_escada].direcao = 1;
+                escadas[n_escada].cor = DARKBLUE;
+
+                n_escada++;
                 break;
 
             case 'D': //caractere 'D' na tabela eh descida de escada, aqui em azul claro
                 //Definindo posição
-                escadas[i][j].pos.x = j*celula.x;
-                escadas[i][j].pos.y = i*celula.y;
+                escadas[n_escada].pos.x = j*celula.x;
+                escadas[n_escada].pos.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                escadas[i][j].size.x = celula.x;
-                escadas[i][j].size.y = celula.y;
+                escadas[n_escada].size.x = celula.x;
+                escadas[n_escada].size.y = celula.y;
 
                 //definindo direção e cor
-                escadas[i][j].direcao = 2;
-                escadas[i][j].cor = BLUE;
+                escadas[n_escada].direcao = 2;
+                escadas[n_escada].cor = BLUE;
+
+                n_escada++;
                 break;
 
             case 'H': //caractere 'H' na tabela eh escada para efeito visual, aqui em roxo
                 //Definindo posição
-                escadas[i][j].pos.x = j*celula.x;
-                escadas[i][j].pos.y = i*celula.y;
+                escadas[n_escada].pos.x = j*celula.x;
+                escadas[n_escada].pos.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                escadas[i][j].size.x = celula.x;
-                escadas[i][j].size.y = celula.y;
+                escadas[n_escada].size.x = celula.x;
+                escadas[n_escada].size.y = celula.y;
 
                 //definindo direção e cor
-                escadas[i][j].direcao = 0;
-                escadas[i][j].cor = PURPLE;
+                escadas[n_escada].direcao = 0;
+                escadas[n_escada].cor = PURPLE;
+
+                n_escada++;
                 break;;
 
             case 'P': //caractere 'P' na tabela eh a posicao inicial do jogador, aqui em verde
@@ -115,30 +117,17 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'E': //caractere ´E´ na tabela eh inimigo, aqui em vermelho
                 //Definindo posição
-                inimigos[i][j].pos.x = j*celula.x;
-                inimigos[i][j].pos.y = i*celula.y;
+                inimigos[n_inimigos].pos.x = j*celula.x;
+                inimigos[n_inimigos].pos.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                inimigos[i][j].size.x = celula.x;
-                inimigos[i][j].size.y = celula.y;
+                inimigos[n_inimigos].size.x = celula.x;
+                inimigos[n_inimigos].size.y = celula.y;
 
                 //definindo a cor
-                inimigos[i][j].cor = RED;
-                break;
-            
-            default: //o resto sao espacos vazios, aqui em cinza claro
-                //Definindo posição
-                plats[i][j].pos.x = j*celula.x;
-                plats[i][j].pos.y = i*celula.y;
+                inimigos[n_inimigos].cor = RED;
 
-                //Definindo tamanho, lembrando que x é a largura e y é a altura
-                plats[i][j].size.x = celula.x;
-                plats[i][j].size.y = celula.y;
-
-                //definindo cor e "dureza"
-                plats[i][j].cor = LIGHTGRAY;
-                plats[i][j].duro = 0;
-                break;
+                n_inimigos++;
             }
 				
         }
@@ -147,56 +136,31 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
 //!Função para desenhar o mapa
 /*
-Essa função percorre a matriz do mapa inteira (que eu estou considerando ela como a matriz "principal/única")
-e atualiza a frame de cada um dos itens
+Essa função assume que nenhum objeto terá tamanho 0, mas como os vetores são preenchidos com apenas zeros
+na inicialização, é possível determinar até onde foi preenchido baseado nessa condição
 */
+//?Você acha que é melhor transformar as quantidades preenchidas em ponteiros, pra dar pra usar em outras funções?
 /*
 ?Por enquanto essa função desenha apenas retângulos com o mesmo tamanho das "células"
 ?Eu vou deixar pra você decidir como vai realmente desenhar os sprites na tela
 */
 
-void desenhar_mapa(int lin, int col, char map[][col], Plataforma plats[][col], Porta portas[], Escada escadas[][col], Inimigo inimigos[][col]){
-    int i, j;
+void desenhar_mapa(int lin, int col, char map[][col], Plataforma plats[], Porta portas[], Escada escadas[], Inimigo inimigos[]){
+    int i;
 
-    for(i=0; i<lin; i++){
-        for(j=0; j<col; j++){
-            switch (map[i][j])
-            {
-            case 'Z': //caractere 'Z' na tabela eh plataforma, aqui em preto
-                DrawRectangleV(plats[i][j].pos, plats[i][j].size, plats[i][j].cor);
-                
-                break;
-                
-            case 'S': //caractere 'S' na tabela eh subida de escada, aqui em azul escuro
-                DrawRectangleV(escadas[i][j].pos, escadas[i][j].size, escadas[i][j].cor);
-                break;
+    //desenhando as plataformas
+    for(i=0; plats[i].size.x !=0 && plats[i].size.y != 0; i++)
+        DrawRectangleV(plats[i].pos, plats[i].size, plats[i].cor);
 
-            case 'D': //caractere 'D' na tabela eh descida de escada, aqui em azul claro
-                DrawRectangleV(escadas[i][j].pos, escadas[i][j].size, escadas[i][j].cor);
-                break;
+    //desenhando as escadas
+    for(i=0; escadas[i].size.x !=0 && escadas[i].size.y != 0; i++)
+        DrawRectangleV(escadas[i].pos, escadas[i].size, escadas[i].cor);
 
-            case 'H': //caractere 'H' na tabela eh escada para efeito visual, aqui em roxo
-                DrawRectangleV(escadas[i][j].pos, escadas[i][j].size, escadas[i][j].cor);
-                break;;
+    //desenhando os inimigos
+    for(i=0; inimigos[i].size.x !=0 && inimigos[i].size.y != 0; i++)
+        DrawRectangleV(inimigos[i].pos, inimigos[i].size, inimigos[i].cor);
 
-            case 'P': //caractere 'P' na tabela eh a posicao inicial do jogador, aqui em verde
-                DrawRectangleV(portas[0].pos, portas[0].size, portas[0].cor);
-                break;
-
-            case 'F': //caractere 'F' na tabela eh o final da fase, aqui em dourado
-                DrawRectangleV(portas[1].pos, portas[1].size, portas[1].cor);
-                break;
-
-            case 'E': //caractere ´E´ na tabela eh inimigo, aqui em vermelho
-                DrawRectangleV(inimigos[i][j].pos, inimigos[i][j].size, inimigos[i][j].cor);
-                break;
-            
-            default: //o resto sao espacos vazios, aqui em cinza claro
-                DrawRectangleV(plats[i][j].pos, plats[i][j].size, plats[i][j].cor);
-                break;
-            }
-				
-        }
-    }
-
+    //desenhando as portas
+    for(i=0; i<2; i++)
+        DrawRectangleV(portas[i].pos, portas[i].size, portas[i].cor);
 }

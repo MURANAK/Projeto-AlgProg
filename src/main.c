@@ -33,10 +33,10 @@ int main(){
     Vector2 ScreenSize = {GetScreenWidth(), GetScreenHeight()};
 
     //declaração dos objetos
-    Plataforma plataformas[LIN][COL] = {0};
-    Escada escadas[LIN][COL] = {0};
+    Plataforma plataformas[LIN*COL] = {0};
+    Escada escadas[LIN*COL] = {0};
     Porta portas[2] = {0};
-    Inimigo inimigos[LIN][COL] = {0};
+    Inimigo inimigos[LIN*COL] = {0};
 
     //Declarando uma matriz para ser o mapa e preenchendo com a matriz exemplo dos criterios
 	char Mapa[LIN][COL] = {
@@ -86,7 +86,7 @@ int main(){
         BeginDrawing();
         desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
         DrawRectangleV(player.pos, player.size, player.cor);
-        ClearBackground(RAYWHITE);
+        ClearBackground(GRAY);
         EndDrawing();
     }
 
