@@ -26,16 +26,16 @@ int ha_sobreposicao(Rectangle obj1, Rectangle obj2){
 
 }
 
-//Para ver se dois objetos estão encostando
-int ha_encosto(Rectangle obj1, Rectangle obj2){
-    int colisao = 0;
+//Para ver se a parte de baixo do obj1 está encostando na parte de cima do obj2
+int ha_encosto_inferior(Rectangle obj1, Rectangle obj2){
+    int encosto = 0;
 
-    if((obj1.x+obj1.width)==obj2.x || obj1.x==(obj2.x+obj2.width)){//checando se há colisão no eixo x
-        if((obj1.y+obj1.height)==obj2.y || obj1.y==(obj2.y+obj2.height))//checando se há colisão no eixo y
-            colisao = 1;
+    if((obj1.y+obj1.height) == obj2.y){ //garante que o obj1 está em cima do obj2 e encostando
+        if(obj1.x <= (obj2.x+obj2.width) && (obj1.x+obj1.width)>=obj2.x)
+            encosto = 1;
     }
 
-    return colisao;
+    return encosto;
 
 }
 

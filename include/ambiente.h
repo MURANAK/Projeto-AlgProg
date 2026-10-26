@@ -8,18 +8,18 @@
 
 //TODO: escadas funcionarem, porta de fim funcionar
 
-typedef struct{ //! eu tambem vou usar esse struct para pintar o fundo
+typedef struct Plataforma{ //! eu tambem vou usar esse struct para pintar o fundo
     Rectangle hitbox;
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
 }Plataforma;
 
-typedef struct{
+typedef struct Escada{
     Rectangle hitbox;
     int direcao; //! 0 será nada (o H), 1 será subida (o S), 2 será descida (o D)
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
 }Escada;
 
-typedef struct{
+typedef struct Porta{
     Rectangle hitbox;
     int inicio; //! 1 significa que eh a porta de inicio e 0 significa que eh a porta pra passar pro fim
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
@@ -28,7 +28,7 @@ typedef struct{
 
 Vector2 get_center(float x, float y, float width, float height);
 int ha_sobreposicao(Rectangle obj1, Rectangle obj2);
-int ha_encosto(Rectangle obj1, Rectangle obj2);
+int ha_encosto_inferior(Rectangle obj1, Rectangle obj2);
 void colisao_plataformas(Player *player, Plataforma plataformas[]);
 
 #endif
