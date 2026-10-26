@@ -74,7 +74,8 @@ int main(){
     gerar_mapa(ScreenSize, LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
 
     //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
-    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ((ScreenSize.x/COL)-5.0), ((ScreenSize.y/LIN)-5.0)}, BROWN, 1};
+    //já que esse jogo é só de computador, então a tela sempre será mais larga que alta, então da para deixar o jogador na vertical
+    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/LIN, ScreenSize.x/COL}, BROWN, 1};
     Vector2 pos_p, size_p = {player.hitbox.width, player.hitbox.height};
 
     //loop do jogo
