@@ -7,4 +7,8 @@ void player_move(Player *player, int vel){
         player->hitbox.x -= vel;
     if (IsKeyDown(KEY_RIGHT))
         player->hitbox.x += vel;
+    if (IsKeyDown(KEY_UP))
+        player->hitbox.y -= vel;
+    if (IsKeyDown(KEY_DOWN))
+        player->hitbox.y += vel;
 }

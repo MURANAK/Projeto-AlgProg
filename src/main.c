@@ -14,7 +14,7 @@
 #define LARGURA 800
 #define ALTURA 450
 //do jogador
-#define VEL 5
+#define VEL 2
 //do mapa
 #define LIN 30
 #define COL 30
@@ -82,10 +82,13 @@ int main(){
         //movimentos
         player_move(&player, VEL);
         ficar_na_tela(&player, ScreenSize);
-        pos_p.x = player.hitbox.x;
-        pos_p.y = player.hitbox.y;
+
+        //Fazendo checagens
+        colisao_plataformas(&player, plataformas);
 
         //Atualização da frame
+        pos_p.x = player.hitbox.x;
+        pos_p.y = player.hitbox.y;
         BeginDrawing();
         desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
         DrawRectangleV(pos_p, size_p, player.cor);

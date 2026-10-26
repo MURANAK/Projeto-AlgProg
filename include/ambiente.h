@@ -4,6 +4,7 @@
 #define AMBIENTE_H
 
 #include "raylib.h"
+#include "player.h"
 
 //TODO: colisões, escadas funcionarem, porta de fim funcionar
 
@@ -28,6 +29,7 @@ typedef struct{
 
 Vector2 get_center(float x, float y, float width, float height);
 int ha_sobreposicao(Rectangle obj1, Rectangle obj2);
-int ha_colisao(Rectangle obj1, Rectangle obj2);
+int ha_encosto(Rectangle obj1, Rectangle obj2);
+void colisao_plataformas(Player *player, Plataforma plataformas[]);
 
 #endif
