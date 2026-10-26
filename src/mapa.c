@@ -147,6 +147,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
     }
 }
 
+
+
 //!Função para desenhar o mapa
 /*
 Essa função assume que nenhum objeto terá tamanho 0, mas como os vetores são preenchidos com apenas zeros
