@@ -4,6 +4,7 @@
 #include "ambiente.h"
 #include "mapa.h"
 #include "obstaculos.h"
+#include "sistema.h"
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
@@ -81,6 +82,7 @@ int main(){
     while(!WindowShouldClose()){
         //movimentos
         player_move(&player, VEL);
+        ficar_na_tela(&player, ScreenSize);
 
         //Atualização da frame
         BeginDrawing();
