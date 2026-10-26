@@ -9,9 +9,13 @@
 Nessa geração de mapa, os objetos são todos tratados como vetores unidimensionais que tem como capacidade
 máxima o mapa inteiro. Dessa forma eu tenho eles preenchidos de maneira linear e sequencial, o que pode tornar
 mais fácil de percorrer todos para checar colisões, por exemplo.
+
+Nessa geração as plataformas são geradas como retângulos únicos de tamanhos variados, a príncipio é pra
+isso me ajudar na hora das colisões
 */
 void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plats[], Porta portas[], Escada escadas[], Inimigo inimigos[]){
     int i, j, n_plat=0, n_escada=0, n_inimigos=0;
+    float tamanho_plat=0; //para saber qual deve ser a largura de cada plataforma
     Vector2 celula; //as celulas ficticias da tela dividida em grade
 
     //dividindo a tela em uma grade
@@ -23,19 +27,28 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
             switch (map[i][j])
             {
             case 'Z': //caractere 'Z' na tabela eh plataforma, aqui em preto
-                //Definindo posição
-                plats[n_plat].hitbox.x = j*celula.x;
-                plats[n_plat].hitbox.y = i*celula.y;
+                if(tamanho_plat == 0){
+                    //Definindo posição
+                    plats[n_plat].hitbox.x = j*celula.x;
+                    plats[n_plat].hitbox.y = i*celula.y;
 
-                //Definindo tamanho, lembrando que x é a largura e y é a altura
-                plats[n_plat].hitbox.width = celula.x;
-                plats[n_plat].hitbox.height = celula.y;
+                    tamanho_plat ++;
+                }
 
-                //definindo cor e "dureza"
-                plats[n_plat].cor = BLACK;
-                plats[n_plat].duro = 1;
+                if(map[i][j+1] == 'Z')
+                    tamanho_plat++;
+                else{
+                    //Definindo tamanho, lembrando que x é a largura e y é a altura
+                    plats[n_plat].hitbox.width = tamanho_plat*celula.x;
+                    plats[n_plat].hitbox.height = celula.y;
 
-                n_plat++;
+                    //definindo cor e "dureza"
+                    plats[n_plat].cor = BLACK;
+                    plats[n_plat].duro = 1;
+
+                    n_plat++;
+                    tamanho_plat = 0;
+                }
                 
                 break;
                 

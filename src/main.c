@@ -32,7 +32,7 @@ int main(){
     Vector2 ScreenSize = {GetScreenWidth(), GetScreenHeight()};
 
     //declaração dos objetos
-    Plataforma plataformas[LIN*COL] = {0};
+    Plataforma plataformas[LIN] = {0};
     Escada escadas[LIN*COL] = {0};
     Porta portas[2] = {0};
     Inimigo inimigos[LIN*COL] = {0};
