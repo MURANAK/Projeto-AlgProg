@@ -28,4 +28,7 @@ typedef struct{
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
 }Porta;
 
+
+Vector2 get_center(Vector2 tamanho, Vector2 posicao);
+
 #endif
