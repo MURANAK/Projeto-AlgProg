@@ -6,7 +6,7 @@
 #include "raylib.h"
 #include "player.h"
 
-//TODO: colisões, escadas funcionarem, porta de fim funcionar
+//TODO: escadas funcionarem, porta de fim funcionar
 
 typedef struct{ //! eu tambem vou usar esse struct para pintar o fundo
     Rectangle hitbox;
