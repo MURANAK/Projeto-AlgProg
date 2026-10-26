@@ -12,6 +12,8 @@ typedef struct Player{
     int vida;
 }Player;
 
-void player_move(Player *player, int vel);
+void player_move_hor(Player *player, float vel, float dt);
+void player_move_ver(Player *player, float vel, float dt);
+void player_jump(Player *player, float vel, float grav);
 
 #endif

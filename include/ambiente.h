@@ -11,7 +11,6 @@
 typedef struct{ //! eu tambem vou usar esse struct para pintar o fundo
     Rectangle hitbox;
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
-    int duro; //pra saber que precisa ter colisão
 }Plataforma;
 
 typedef struct{

@@ -42,9 +42,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
                     plats[n_plat].hitbox.width = tamanho_plat*celula.x;
                     plats[n_plat].hitbox.height = celula.y;
 
-                    //definindo cor e "dureza"
+                    //definindo cor
                     plats[n_plat].cor = BLACK;
-                    plats[n_plat].duro = 1;
 
                     n_plat++;
                     tamanho_plat = 0;
