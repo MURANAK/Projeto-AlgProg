@@ -116,12 +116,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'F': //caractere 'F' na tabela eh o final da fase, aqui em dourado
                 //Definindo posição
-                portas[0].hitbox.x = j*celula.x;
-                portas[0].hitbox.y = i*celula.y;
+                portas[1].hitbox.x = j*celula.x;
+                portas[1].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                portas[0].hitbox.width = celula.x;
-                portas[0].hitbox.height = celula.y;
+                portas[1].hitbox.width = celula.x;
+                portas[1].hitbox.height = celula.y;
 
                 //definindo se eh inicio ou final e sua cor
                 portas[1].inicio = 0;
