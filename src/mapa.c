@@ -24,12 +24,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
             {
             case 'Z': //caractere 'Z' na tabela eh plataforma, aqui em preto
                 //Definindo posição
-                plats[n_plat].pos.x = j*celula.x;
-                plats[n_plat].pos.y = i*celula.y;
+                plats[n_plat].hitbox.x = j*celula.x;
+                plats[n_plat].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                plats[n_plat].size.x = celula.x;
-                plats[n_plat].size.y = celula.y;
+                plats[n_plat].hitbox.width = celula.x;
+                plats[n_plat].hitbox.height = celula.y;
 
                 //definindo cor e "dureza"
                 plats[n_plat].cor = BLACK;
@@ -41,12 +41,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
                 
             case 'S': //caractere 'S' na tabela eh subida de escada, aqui em azul escuro
                 //Definindo posição
-                escadas[n_escada].pos.x = j*celula.x;
-                escadas[n_escada].pos.y = i*celula.y;
+                escadas[n_escada].hitbox.x = j*celula.x;
+                escadas[n_escada].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                escadas[n_escada].size.x = celula.x;
-                escadas[n_escada].size.y = celula.y;
+                escadas[n_escada].hitbox.width = celula.x;
+                escadas[n_escada].hitbox.height = celula.y;
 
                 //definindo direção e cor
                 escadas[n_escada].direcao = 1;
@@ -57,12 +57,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'D': //caractere 'D' na tabela eh descida de escada, aqui em azul claro
                 //Definindo posição
-                escadas[n_escada].pos.x = j*celula.x;
-                escadas[n_escada].pos.y = i*celula.y;
+                escadas[n_escada].hitbox.x = j*celula.x;
+                escadas[n_escada].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                escadas[n_escada].size.x = celula.x;
-                escadas[n_escada].size.y = celula.y;
+                escadas[n_escada].hitbox.width = celula.x;
+                escadas[n_escada].hitbox.height = celula.y;
 
                 //definindo direção e cor
                 escadas[n_escada].direcao = 2;
@@ -73,12 +73,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'H': //caractere 'H' na tabela eh escada para efeito visual, aqui em roxo
                 //Definindo posição
-                escadas[n_escada].pos.x = j*celula.x;
-                escadas[n_escada].pos.y = i*celula.y;
+                escadas[n_escada].hitbox.x = j*celula.x;
+                escadas[n_escada].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                escadas[n_escada].size.x = celula.x;
-                escadas[n_escada].size.y = celula.y;
+                escadas[n_escada].hitbox.width = celula.x;
+                escadas[n_escada].hitbox.height = celula.y;
 
                 //definindo direção e cor
                 escadas[n_escada].direcao = 0;
@@ -89,12 +89,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'P': //caractere 'P' na tabela eh a posicao inicial do jogador, aqui em verde
                 //Definindo posição
-                portas[0].pos.x = j*celula.x;
-                portas[0].pos.y = i*celula.y;
+                portas[0].hitbox.x = j*celula.x;
+                portas[0].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                portas[0].size.x = celula.x;
-                portas[0].size.y = celula.y;
+                portas[0].hitbox.width = celula.x;
+                portas[0].hitbox.height = celula.y;
 
                 //definindo se eh inicio ou final e sua cor
                 portas[0].inicio = 1;
@@ -103,12 +103,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'F': //caractere 'F' na tabela eh o final da fase, aqui em dourado
                 //Definindo posição
-                portas[1].pos.x = j*celula.x;
-                portas[1].pos.y = i*celula.y;
+                portas[0].hitbox.x = j*celula.x;
+                portas[0].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                portas[1].size.x = celula.x;
-                portas[1].size.y = celula.y;
+                portas[0].hitbox.width = celula.x;
+                portas[0].hitbox.height = celula.y;
 
                 //definindo se eh inicio ou final e sua cor
                 portas[1].inicio = 0;
@@ -117,12 +117,12 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'E': //caractere ´E´ na tabela eh inimigo, aqui em vermelho
                 //Definindo posição
-                inimigos[n_inimigos].pos.x = j*celula.x;
-                inimigos[n_inimigos].pos.y = i*celula.y;
+                inimigos[n_inimigos].hitbox.x = j*celula.x;
+                inimigos[n_inimigos].hitbox.y = i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
-                inimigos[n_inimigos].size.x = celula.x;
-                inimigos[n_inimigos].size.y = celula.y;
+                inimigos[n_inimigos].hitbox.width = celula.x;
+                inimigos[n_inimigos].hitbox.height = celula.y;
 
                 //definindo a cor
                 inimigos[n_inimigos].cor = RED;
@@ -147,20 +147,49 @@ na inicialização, é possível determinar até onde foi preenchido baseado nes
 
 void desenhar_mapa(int lin, int col, char map[][col], Plataforma plats[], Porta portas[], Escada escadas[], Inimigo inimigos[]){
     int i;
+    Vector2 pos, size;
 
     //desenhando as plataformas
-    for(i=0; plats[i].size.x !=0 && plats[i].size.y != 0; i++)
-        DrawRectangleV(plats[i].pos, plats[i].size, plats[i].cor);
+    for(i=0; plats[i].hitbox.width !=0 && plats[i].hitbox.height != 0; i++){
+        pos.x = plats[i].hitbox.x;
+        pos.y = plats[i].hitbox.y;
+
+        size.x = plats[i].hitbox.width;
+        size.y = plats[i].hitbox.height;
+
+        DrawRectangleV(pos, size, plats[i].cor);
+    }
 
     //desenhando as escadas
-    for(i=0; escadas[i].size.x !=0 && escadas[i].size.y != 0; i++)
-        DrawRectangleV(escadas[i].pos, escadas[i].size, escadas[i].cor);
+    for(i=0; escadas[i].hitbox.width !=0 && escadas[i].hitbox.height != 0; i++){
+        pos.x = escadas[i].hitbox.x;
+        pos.y = escadas[i].hitbox.y;
+
+        size.x = escadas[i].hitbox.width;
+        size.y = escadas[i].hitbox.height;
+
+        DrawRectangleV(pos, size, escadas[i].cor);
+    }
 
     //desenhando os inimigos
-    for(i=0; inimigos[i].size.x !=0 && inimigos[i].size.y != 0; i++)
-        DrawRectangleV(inimigos[i].pos, inimigos[i].size, inimigos[i].cor);
+    for(i=0; inimigos[i].hitbox.width !=0 && inimigos[i].hitbox.height != 0; i++){
+        pos.x = inimigos[i].hitbox.x;
+        pos.y = inimigos[i].hitbox.y;
+
+        size.x = inimigos[i].hitbox.width;
+        size.y = inimigos[i].hitbox.height;
+
+        DrawRectangleV(pos, size, inimigos[i].cor);
+    }
 
     //desenhando as portas
-    for(i=0; i<2; i++)
-        DrawRectangleV(portas[i].pos, portas[i].size, portas[i].cor);
+    for(i=0; i<2; i++){
+        pos.x = portas[i].hitbox.x;
+        pos.y = portas[i].hitbox.y;
+
+        size.x = portas[i].hitbox.width;
+        size.y = portas[i].hitbox.height;
+
+        DrawRectangleV(pos, size, portas[i].cor);
+    }
 }

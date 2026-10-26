@@ -15,8 +15,6 @@
 #define ALTURA 450
 //do jogador
 #define VEL 5
-#define HEIGHT 20
-#define WIDTH 20
 //do mapa
 #define LIN 30
 #define COL 30
@@ -76,18 +74,21 @@ int main(){
     gerar_mapa(ScreenSize, LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
 
     //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
-    Player player = {{portas[0].pos.x, portas[0].pos.y}, {ScreenSize.x/COL, ScreenSize.y/LIN}, BROWN, 1};
+    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.x/COL, ScreenSize.y/LIN}, BROWN, 1};
+    Vector2 pos_p, size_p = {player.hitbox.width, player.hitbox.height};
 
     //loop do jogo
     while(!WindowShouldClose()){
         //movimentos
         player_move(&player, VEL);
         ficar_na_tela(&player, ScreenSize);
+        pos_p.x = player.hitbox.x;
+        pos_p.y = player.hitbox.y;
 
         //Atualização da frame
         BeginDrawing();
         desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
-        DrawRectangleV(player.pos, player.size, player.cor);
+        DrawRectangleV(pos_p, size_p, player.cor);
         ClearBackground(GRAY);
         EndDrawing();
     }

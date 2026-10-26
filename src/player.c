@@ -4,7 +4,7 @@
 
 void player_move(Player *player, int vel){
     if (IsKeyDown(KEY_LEFT))
-        player->pos.x -= vel;
+        player->hitbox.x -= vel;
     if (IsKeyDown(KEY_RIGHT))
-        player->pos.x += vel;
+        player->hitbox.x += vel;
 }

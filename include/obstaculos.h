@@ -7,8 +7,7 @@
 //TODO: movimento dos inimigos, fazer que eles matem o player
 
 typedef struct{
-    Vector2 pos;
-    Vector2 size;
+    Rectangle hitbox;
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
 }Inimigo;
 

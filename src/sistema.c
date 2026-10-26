@@ -6,13 +6,13 @@
 
 void ficar_na_tela(Player *player, Vector2 tela){
     //Para teletransportar o jogador para o lado oposto ao sair totalmente da tela
-	if((player->pos.x+player->size.x)<0)
-		player->pos.x = tela.x;
-	if((player->pos.y+player->size.y)<0)
-		player->pos.y = tela.y;
-	if(player->pos.x>tela.x)
-		player->pos.x = 0;
-	if(player->pos.y>tela.y)
-		player->pos.y = 0;
+	if((player->hitbox.x+player->hitbox.width)<0)
+		player->hitbox.x = tela.x;
+	if((player->hitbox.y+player->hitbox.height)<0)
+		player->hitbox.y = tela.y;
+	if(player->hitbox.x>tela.x)
+		player->hitbox.x = 0;
+	if(player->hitbox.y>tela.y)
+		player->hitbox.y = 0;
 
 }
