@@ -14,9 +14,7 @@
 #define LARGURA 800
 #define ALTURA 450
 //do jogador
-#define VEL 5
-#define HEIGHT 20
-#define WIDTH 20
+#define VEL 2
 //do mapa
 #define LIN 30
 #define COL 30
@@ -34,10 +32,10 @@ int main(){
     Vector2 ScreenSize = {GetScreenWidth(), GetScreenHeight()};
 
     //declaração dos objetos
-    Plataforma plataformas[LIN][COL] = {0};
-    Escada escadas[LIN][COL] = {0};
+    Plataforma plataformas[LIN] = {0};
+    Escada escadas[LIN*COL] = {0};
     Porta portas[2] = {0};
-    Inimigo inimigos[LIN][COL] = {0};
+    Inimigo inimigos[LIN*COL] = {0};
 
     //Declarando uma matriz para ser o mapa e preenchendo com a matriz exemplo dos criterios
 	char Mapa[LIN][COL] = {
@@ -76,7 +74,8 @@ int main(){
     gerar_mapa(ScreenSize, LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
 
     //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
-    Player player = {{portas[0].pos.x, portas[0].pos.y}, {ScreenSize.x/COL, ScreenSize.y/LIN}, BROWN, 1};
+    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.x/COL, ScreenSize.y/LIN}, BROWN, 1};
+    Vector2 pos_p, size_p = {player.hitbox.width, player.hitbox.height};
 
     //loop do jogo
     while(!WindowShouldClose()){
@@ -84,11 +83,16 @@ int main(){
         player_move(&player, VEL);
         ficar_na_tela(&player, ScreenSize);
 
+        //Fazendo checagens
+        colisao_plataformas(&player, plataformas);
+
         //Atualização da frame
+        pos_p.x = player.hitbox.x;
+        pos_p.y = player.hitbox.y;
         BeginDrawing();
         desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
-        DrawRectangleV(player.pos, player.size, player.cor);
-        ClearBackground(RAYWHITE);
+        DrawRectangleV(pos_p, size_p, player.cor);
+        ClearBackground(GRAY);
         EndDrawing();
     }
 

@@ -7,8 +7,7 @@
 //TODO: fazer que ele morra, suba/desça escadas
 
 typedef struct Player{
-    Vector2 pos;
-    Vector2 size;
+    Rectangle hitbox;
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
     int vida;
 }Player;
