@@ -6,7 +6,7 @@
 #include "raylib.h"
 #include "player.h"
 
-//TODO: escadas funcionarem, porta de fim funcionar
+//TODO: porta de fim funcionar
 
 typedef struct Plataforma{ //! eu tambem vou usar esse struct para pintar o fundo
     Rectangle hitbox;
@@ -15,7 +15,7 @@ typedef struct Plataforma{ //! eu tambem vou usar esse struct para pintar o fund
 
 typedef struct Escada{
     Rectangle hitbox;
-    int direcao; //! 0 será nada (o H), 1 será subida (o S), 2 será descida (o D)
+    int direcao; //! 0 será nada (o H), 1 será subida, 2 será descida
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
 }Escada;
 

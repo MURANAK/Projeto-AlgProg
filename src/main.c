@@ -14,9 +14,9 @@
 #define LARGURA 800
 #define ALTURA 450
 //do jogador
-#define VEL 100.0f
-#define G 70.0f
-#define JUMP_POWER -50.0f
+#define VEL 200.0f
+#define G 250.0f
+#define JUMP_POWER -200.0f
 //do mapa
 #define LIN 30
 #define COL 30
@@ -78,7 +78,7 @@ int main(){
 
     //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
     //já que esse jogo é só de computador, então a tela sempre será mais larga que alta, então da para deixar o jogador na vertical
-    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/LIN, ScreenSize.y/LIN}, BROWN, 1, 1, 0.0};
+    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/LIN, ScreenSize.y/LIN}, BROWN, 1, 1, 0, 0, 1, 0, 0.0};
     Vector2 pos_p, size_p = {player.hitbox.width, player.hitbox.height};
 
     //loop do jogo
@@ -91,9 +91,7 @@ int main(){
         sobre isso pra entender melhor
         */
         float dt = GetFrameTime();
-        player_move_hor(&player, VEL, dt);
-        player_move_ver(&player, VEL, dt);
-        player_jump(&player, JUMP_POWER, G, dt, plataformas);
+        player_move(&player, VEL, dt, JUMP_POWER, G, plataformas, escadas);
         ficar_na_tela(&player, ScreenSize);
 
         //Fazendo checagens
