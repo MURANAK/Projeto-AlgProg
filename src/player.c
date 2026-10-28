@@ -4,7 +4,8 @@
 #include "ambiente.h"
 
 //Para condensar tudo de movimento de jogador em uma única função
-void player_move(Player *player, float vel, float dt, float jump_pow, float grav, Plataforma *plataformas, Escada *escadas){
+void ficar_na_tela(Player *player, Vector2 tela);
+void player_move(Vector2 tela, Player *player, float vel, float dt, float jump_pow, float grav, Plataforma *plataformas, Escada *escadas){
     player_climb(player, vel, dt, escadas);
     if(player->mov_hor)
         player_move_hor(player, vel, dt);
@@ -17,6 +18,8 @@ void player_move(Player *player, float vel, float dt, float jump_pow, float grav
             player->hitbox.y += vel*dt;
     }
     player_jump(player, jump_pow, grav, dt, plataformas);
+
+    ficar_na_tela(player, tela);
 }
 
 void player_move_hor(Player *player, float vel, float dt){
@@ -31,14 +34,24 @@ void player_jump(Player *player, float jump_pow, float grav, float dt, Plataform
 
     //vendo se o jogador está no chão
     for(int i=0; plataformas[i].hitbox.height != 0 && plataformas[i].hitbox.width != 0; i++){
-        if(ha_encosto_inferior(player->hitbox, plataformas[i].hitbox))
+        if(ha_encosto_inferior(player->hitbox, plataformas[i].hitbox)){
             player->is_on_ground = 1;
+            break; //para parar de procurar assim que houver encosto
+        }
     }
 
     //jogador pula com espaço, só quando estiver no chão, não conta estar em escadas
     if(player->is_on_ground && IsKeyPressed(KEY_SPACE) && !(player->is_on_stair)){
         player->is_on_ground = 0;
         player->acel_vertical = jump_pow;
+    }
+
+    //para caso bata em alguma plataforma
+    for(int i=0; plataformas[i].hitbox.height != 0 && plataformas[i].hitbox.width != 0; i++){
+        if(ha_encosto_inferior(plataformas[i].hitbox, player->hitbox)){
+            player->acel_vertical = 0; //para ele começar a cair de imediato
+            break; //para parar de procurar assim que houver encosto
+        }
     }
 
     //escadas são mágicas, gravidade não se aplica nelas, mas se o jogador estiver fora de uma escada e não estiver no chão, existe gravidade
@@ -72,25 +85,7 @@ void player_climb(Player *player, float vel, float dt, Escada *escadas){
                 break;
             }
         }
-        //se o jogador estiver em cima de escada de descida ele não consegue subir
-        //!Por enquanto não funciona
-        else if(ha_encosto_inferior(player->hitbox, escadas[i].hitbox) && escadas[i].direcao==2){
-            player->is_on_stair = 1;
-            player->hitbox.y = escadas[i].hitbox.y - player->hitbox.height;
-            player->mov_hor = 1;
-            player->subida = 0;
-            player->descida = 1;
-            break;
-        }
-        //se o jogador estiver em baixo de escada de subida ele não consegue descer
-        //!Por enquanto não funciona
-        else if(ha_encosto_inferior(escadas[i].hitbox, player->hitbox) && escadas[i].direcao==1){
-            player->is_on_stair = 1;
-            player->mov_hor = 1;
-            player->subida = 1;
-            player->descida = 0;
-            break;
-        }
+
         else{ //se o jogador não estiver em uma escada ele só pode se mover horizontalmente e pular
             player->mov_hor = 1;
             player->subida = 0;

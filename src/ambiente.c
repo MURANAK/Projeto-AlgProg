@@ -31,8 +31,14 @@ int ha_encosto_inferior(Rectangle obj1, Rectangle obj2){
     int encosto = 0;
 
     if((obj1.y+obj1.height) == obj2.y){ //garante que o obj1 está em cima do obj2 e encostando
-        if(obj1.x <= (obj2.x+obj2.width) && (obj1.x+obj1.width)>=obj2.x)
-            encosto = 1;
+        if((obj1.x+obj1.width)<=(obj2.x+obj2.width)){
+            if(obj1.x <= (obj2.x+obj2.width) && (obj1.x+obj1.width)>=obj2.x)
+                encosto = 1;
+        }
+        else{
+            if(obj2.x <= (obj1.x+obj1.width) && (obj2.x+obj2.width)>=obj1.x)
+                encosto = 1;
+        }
     }
 
     return encosto;
@@ -51,13 +57,15 @@ void colisao_plataformas(Player *player, Plataforma plataformas[]){
             //começando pelas laterais
             //checa se o centro do jogador está entre a altura total da plataforma
             if(c_player.y>plataformas[i].hitbox.y && c_player.y<(plataformas[i].hitbox.y+plataformas[i].hitbox.height)){
-				if(c_player.x>c_plataforma.x) //vindo da direita da plataforma
+				player->cor = PINK;
+                if(c_player.x>c_plataforma.x) //vindo da direita da plataforma
 					player->hitbox.x = plataformas[i].hitbox.x + plataformas[i].hitbox.width;
 				if(c_player.x<c_plataforma.x) //vindo da esquerda
 					player->hitbox.x = plataformas[i].hitbox.x - player->hitbox.width;
 			}
             //depois de cima e de baixo
             else{
+                player->cor = ORANGE;
                 if(c_player.y<c_plataforma.y){ //vindo de cima
 					player->hitbox.y = plataformas[i].hitbox.y - player->hitbox.height;
 				}
@@ -65,6 +73,7 @@ void colisao_plataformas(Player *player, Plataforma plataformas[]){
 					player->hitbox.y = plataformas[i].hitbox.y + plataformas[i].hitbox.height;
 				}
             }
+            break; //para parar depois de achar sobreposição com alguma plataforma
         }
     }
 }
