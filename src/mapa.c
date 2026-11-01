@@ -152,7 +152,9 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 inimigos[n_inimigos].hitbox.width = celula.x;
                 inimigos[n_inimigos].hitbox.height = celula.y;
-
+                //os inimigos começam andando para a direita (0)
+                inimigos[n_inimigos].direcao = 0;
+                
                 //definindo a cor
                 inimigos[n_inimigos].cor = RED;
 

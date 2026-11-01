@@ -77,3 +77,4 @@ void colisao_plataformas(Player *player, Plataforma plataformas[]){
         }
     }
 }
+

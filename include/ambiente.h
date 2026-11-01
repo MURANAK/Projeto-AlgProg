@@ -30,5 +30,4 @@ Vector2 get_center(float x, float y, float width, float height);
 int ha_sobreposicao(Rectangle obj1, Rectangle obj2);
 int ha_encosto_inferior(Rectangle obj1, Rectangle obj2);
 void colisao_plataformas(Player *player, Plataforma plataformas[]);
-
 #endif
