@@ -91,8 +91,7 @@ int main(){
         phase_end(&player, portas, &placar, &fase_atual, &timer, &fase_rodando);
 
         //Atualização da frame
-        if (timer.rodando)
-            timer_func(&timer);
+        timer_func(&timer);
         BeginDrawing();
         //para desenhar timer
         int tamanhoFonte = 40, margem = 20;
