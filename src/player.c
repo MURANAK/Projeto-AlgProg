@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "player.h"
 #include "ambiente.h"
+#include "obstaculos.h"
 
 //Para condensar tudo de movimento de jogador em uma única função
 void ficar_na_tela(Player *player, Vector2 tela);
@@ -98,4 +99,11 @@ void player_climb(Player *player, float vel, float dt, Escada *escadas){
         } 
     }
 
+}
+
+void perder_vida(Player *player, Inimigo *inimigos){
+    for(int i=0; inimigos[i].hitbox.height != 0 && inimigos[i].hitbox.width != 0; i++){
+        if(ha_sobreposicao(player->hitbox, inimigos[i].hitbox))
+            player->vida -= 1;
+    }
 }

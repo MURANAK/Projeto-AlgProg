@@ -19,9 +19,11 @@ typedef struct Player{
 
 typedef struct Plataforma Plataforma;
 typedef struct Escada Escada;
+typedef struct Inimigo Inimigo;
 void player_move(Vector2 tela, Player *player, float vel, float dt, float jump_pow, float grav, Plataforma *plataformas, Escada *escadas);
 void player_move_hor(Player *player, float vel, float dt);
 void player_jump(Player *player, float jump_pow, float grav, float dt, Plataforma *plataformas);
 void player_climb(Player *player, float vel, float dt, Escada *escadas);
+void perder_vida(Player *player, Inimigo *inimigos);
 
 #endif

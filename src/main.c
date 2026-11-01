@@ -93,6 +93,7 @@ int main(){
         um computador com FPS maior se move mais. Com o dt acaba igualando. É meio confuso, eu recomendo você pesquisar
         sobre isso pra entender melhor
         */
+        game_over(&player, inimigos, portas);
         float dt = GetFrameTime();
         player_move(ScreenSize, &player, VEL, dt, JUMP_POWER, G, plataformas, escadas);
 
@@ -101,6 +102,7 @@ int main(){
 
         //Fazendo checagens
         colisao_plataformas(&player, plataformas);
+        perder_vida(&player, inimigos);
 
         //Atualização da frame
         BeginDrawing();

@@ -57,7 +57,6 @@ void colisao_plataformas(Player *player, Plataforma plataformas[]){
             //começando pelas laterais
             //checa se o centro do jogador está entre a altura total da plataforma
             if(c_player.y>plataformas[i].hitbox.y && c_player.y<(plataformas[i].hitbox.y+plataformas[i].hitbox.height)){
-				player->cor = PINK;
                 if(c_player.x>c_plataforma.x) //vindo da direita da plataforma
 					player->hitbox.x = plataformas[i].hitbox.x + plataformas[i].hitbox.width;
 				if(c_player.x<c_plataforma.x) //vindo da esquerda
@@ -65,7 +64,6 @@ void colisao_plataformas(Player *player, Plataforma plataformas[]){
 			}
             //depois de cima e de baixo
             else{
-                player->cor = ORANGE;
                 if(c_player.y<c_plataforma.y){ //vindo de cima
 					player->hitbox.y = plataformas[i].hitbox.y - player->hitbox.height;
 				}
