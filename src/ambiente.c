@@ -73,7 +73,7 @@ void colisao_plataformas(Player *player, Plataforma plataformas[]){
 					player->hitbox.y = plataformas[i].hitbox.y + plataformas[i].hitbox.height;
 				}
             }
-            break; //para parar depois de achar sobreposição com alguma plataforma
+            
         }
     }
 }

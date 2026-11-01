@@ -27,27 +27,18 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
             switch (map[i][j])
             {
             case 'Z': //caractere 'Z' na tabela eh plataforma, aqui em preto
-                if(tamanho_plat == 0){
-                    //Definindo posição
-                    plats[n_plat].hitbox.x = j*celula.x;
-                    plats[n_plat].hitbox.y = i*celula.y;
+                //Definindo posição
+                plats[n_plat].hitbox.x = j*celula.x;
+                plats[n_plat].hitbox.y = i*celula.y;
 
-                    tamanho_plat ++;
-                }
+                //Definindo tamanho, lembrando que x é a largura e y é a altura
+                plats[n_plat].hitbox.width = celula.x;
+                plats[n_plat].hitbox.height = celula.y;
 
-                if(map[i][j+1] == 'Z')
-                    tamanho_plat++;
-                else{
-                    //Definindo tamanho, lembrando que x é a largura e y é a altura
-                    plats[n_plat].hitbox.width = tamanho_plat*celula.x;
-                    plats[n_plat].hitbox.height = celula.y;
+                //definindo direção e cor
+                plats[n_plat].cor = BLACK;
 
-                    //definindo cor
-                    plats[n_plat].cor = BLACK;
-
-                    n_plat++;
-                    tamanho_plat = 0;
-                }
+                n_plat++;
                 
                 break;
                 
