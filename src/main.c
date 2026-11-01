@@ -79,7 +79,6 @@ int main(){
     //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
     //já que esse jogo é só de computador, então a tela sempre será mais larga que alta, então da para deixar o jogador na vertical
     Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/(LIN+1), ScreenSize.y/(LIN+1)}, BROWN, 1, 1, 0, 0, 1, 0, 0.0};
-    Vector2 pos_p, size_p = {player.hitbox.width, player.hitbox.height};
 
     //loop do jogo
     while(!WindowShouldClose()){
@@ -97,11 +96,9 @@ int main(){
         colisao_plataformas(&player, plataformas);
 
         //Atualização da frame
-        pos_p.x = player.hitbox.x;
-        pos_p.y = player.hitbox.y;
         BeginDrawing();
         desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
-        DrawRectangleV(pos_p, size_p, player.cor);
+        DrawRectangleRec(player.hitbox, player.cor);
         ClearBackground(GRAY);
         EndDrawing();
     }

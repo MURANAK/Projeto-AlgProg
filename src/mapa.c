@@ -152,49 +152,25 @@ na inicialização, é possível determinar até onde foi preenchido baseado nes
 
 void desenhar_mapa(int lin, int col, char map[][col], Plataforma plats[], Porta portas[], Escada escadas[], Inimigo inimigos[]){
     int i;
-    Vector2 pos, size;
 
     //desenhando as plataformas
     for(i=0; plats[i].hitbox.width !=0 && plats[i].hitbox.height != 0; i++){
-        pos.x = plats[i].hitbox.x;
-        pos.y = plats[i].hitbox.y;
 
-        size.x = plats[i].hitbox.width;
-        size.y = plats[i].hitbox.height;
-
-        DrawRectangleV(pos, size, plats[i].cor);
+        DrawRectangleRec(plats[i].hitbox, plats[i].cor);
     }
 
     //desenhando as escadas
     for(i=0; escadas[i].hitbox.width !=0 && escadas[i].hitbox.height != 0; i++){
-        pos.x = escadas[i].hitbox.x;
-        pos.y = escadas[i].hitbox.y;
-
-        size.x = escadas[i].hitbox.width;
-        size.y = escadas[i].hitbox.height;
-
-        DrawRectangleV(pos, size, escadas[i].cor);
+        DrawRectangleRec(escadas[i].hitbox, escadas[i].cor);
     }
 
     //desenhando os inimigos
     for(i=0; inimigos[i].hitbox.width !=0 && inimigos[i].hitbox.height != 0; i++){
-        pos.x = inimigos[i].hitbox.x;
-        pos.y = inimigos[i].hitbox.y;
-
-        size.x = inimigos[i].hitbox.width;
-        size.y = inimigos[i].hitbox.height;
-
-        DrawRectangleV(pos, size, inimigos[i].cor);
+        DrawRectangleRec(inimigos[i].hitbox, inimigos[i].cor);
     }
 
     //desenhando as portas
     for(i=0; i<2; i++){
-        pos.x = portas[i].hitbox.x;
-        pos.y = portas[i].hitbox.y;
-
-        size.x = portas[i].hitbox.width;
-        size.y = portas[i].hitbox.height;
-
-        DrawRectangleV(pos, size, portas[i].cor);
+        DrawRectangleRec(portas[i].hitbox, portas[i].cor);
     }
 }
