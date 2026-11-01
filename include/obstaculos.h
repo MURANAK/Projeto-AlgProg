@@ -3,12 +3,15 @@
 #define OBSTACULOS_H
 
 #include "raylib.h"
+#include "ambiente.h"
 
 //TODO: movimento dos inimigos, fazer que eles matem o player
 
-typedef struct{
+typedef struct Inimigo{
     Rectangle hitbox;
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
 }Inimigo;
+
+enemy_move(Inimigo inimigos[], Plataforma plataformas(), float dt);
 
 #endif
