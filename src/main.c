@@ -17,9 +17,6 @@
 #define VEL 200.0f
 #define G 500.0f
 #define JUMP_POWER -250.0f //!tem que achar um jeito melhor de definir isso, ou consertar para que o jogador comece a cair imediatamente após atigir algo em cima
-//do mapa
-#define LIN 30
-#define COL 30
 
 //TODO: placar, menu de pause, menu inicial, menu final com os scores, temporizador
 
@@ -34,60 +31,37 @@ int main(){
     //?deixei assim em vez de usar os defines, pra no futuro ser possivel sair e entrar da tela cheia
     Vector2 ScreenSize = {GetScreenWidth(), GetScreenHeight()};
 
-    //declaração dos objetos
-    Plataforma plataformas[LIN*COL] = {0};
-    Escada escadas[LIN*COL] = {0};
+    //importa o texto do arquivo mapa1.txt
+    char *texto = LoadFileText("resources/mapa1.txt");
+    //testando se o arquivo é válido
+    if (texto == NULL) {
+        TraceLog(LOG_ERROR, "Nao foi possivel ler o mapa!");
+        CloseWindow();
+        return 1;
+    }
+
+    //dimensões do mapa
+    int lin, col;
+    medir_mapa(texto, &lin, &col);
+
+    //aloca o espaço na memória dinâmicamente com o calloc, que preenche a matriz com \0
+    char (*Mapa)[col] = calloc(lin, sizeof *Mapa);
+
+    //structs do mapa, que são definidas a partir do tamanho do mapa usando o calloc
+    Plataforma *plataformas = calloc(lin*col + 1, sizeof *plataformas);
+    Escada *escadas = calloc(lin*col + 1, sizeof *escadas);
+    Inimigo *inimigos = calloc(lin*col + 1, sizeof *inimigos);
     Porta portas[2] = {0};
-    Inimigo inimigos[LIN*COL] = {0};
 
-    //!WIP
-    // char *fileMapa = LoadFileText("resources/mapa1.txt");
-    // char Mapa[LIN][COL] = {0};
+    preencher_mapa(texto, lin, col, Mapa);
+    UnloadFileText(texto);   //terminou de usar o texto, pode liberar a memória de novo
 
-    //Declarando uma matriz para ser o mapa e preenchendo com a matriz exemplo dos criterios
-	char Mapa[LIN][COL]  = {
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'F', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', 'D', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t'},
-        {'\t', '\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', 'E', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D'},
-        {'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H'},
-        {'\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H'},
-        {'\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', 'S'},
-        {'\t', '\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', 'E', '\t', '\t', '\t', '\t'},
-        {'\t', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', 'Z', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', 'Z', '\t', '\t', '\t', 'S', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', 'D', '\t', '\t', '\t', '\t', 'E', 'S', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t', '\t', '\t', '\t', '\t', '\t', 'D', '\t'},
-        {'\t', 'H', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'H', '\t'},
-        {'\t', 'H', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'H', '\t'},
-        {'\t', 'S', '\t', '\t', '\t', 'P', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', 'S', '\t'},
-        {'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'},
-        {'\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t', '\t'}
-    };
-
-    gerar_mapa(ScreenSize, LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
+    Vector2 celula; //as celulas ficticias da tela dividida em grade
+    gerar_mapa(ScreenSize, lin, col, Mapa, plataformas, portas, escadas, inimigos, &celula);
 
     //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
     //já que esse jogo é só de computador, então a tela sempre será mais larga que alta, então da para deixar o jogador na vertical
-<<<<<<< HEAD
-    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/(LIN+1)*0.8, ScreenSize.y/(LIN+1)*0.8}, BROWN, 1, 1, 0, 0, 1, 0, 0.0};
-    Vector2 pos_p, size_p = {player.hitbox.width, player.hitbox.height};
-=======
-    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/(LIN+1), ScreenSize.y/(LIN+1)}, BROWN, 1, 1, 0, 0, 1, 0, 0.0};
->>>>>>> 78d4487814047280f1a76c06fb966953327f7fde
+    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, celula.x * 0.8, celula.y * 0.8}, BROWN, 1, 1, 0, 0, 1, 0, 0.0};
 
     //loop do jogo
     while(!WindowShouldClose()){
@@ -106,11 +80,13 @@ int main(){
 
         //Atualização da frame
         BeginDrawing();
-        desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
+        desenhar_mapa(lin, col, Mapa, plataformas, portas, escadas, inimigos);
         DrawRectangleRec(player.hitbox, player.cor);
         ClearBackground(GRAY);
         EndDrawing();
     }
+
+    free(Mapa); free(plataformas); free(escadas); free(inimigos);
 
     //Fim do programa
     CloseWindow();
