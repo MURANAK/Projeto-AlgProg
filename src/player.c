@@ -54,6 +54,11 @@ void player_jump(Player *player, float jump_pow, float grav, float dt, Plataform
         }
     }
 
+    //tentativa de resolver gravidade esquisita no pulo vs caindo sem pulo
+    if (player->is_on_ground) {
+        player->acel_vertical = 0;
+    }
+
     //escadas são mágicas, gravidade não se aplica nelas, mas se o jogador estiver fora de uma escada e não estiver no chão, existe gravidade
     if(!(player->is_on_ground) && !(player->is_on_stair)){
         player->acel_vertical += grav*dt;

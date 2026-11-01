@@ -8,6 +8,9 @@
 
 //TODO: mudança de fase
 
+//!WIP
+//void ler_mapa(char *fileMapa, char *Mapa[lin][col]);
+
 //Essa função "atribui tipos" para cada célula da grade da tela
 void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plats[], Porta portas[], Escada escadas[], Inimigo inimigos[]);
 //Essa fução desenha tudo

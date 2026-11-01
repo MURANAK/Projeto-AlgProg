@@ -11,12 +11,12 @@
 
 //Constantes
 // da tela
-#define LARGURA 800
-#define ALTURA 450
+#define LARGURA 300
+#define ALTURA 900
 //do jogador
 #define VEL 200.0f
-#define G 250.0f
-#define JUMP_POWER -200.0f //!tem que achar um jeito melhor de definir isso, ou consertar para que o jogador comece a cair imediatamente após atigir algo em cima
+#define G 500.0f
+#define JUMP_POWER -250.0f //!tem que achar um jeito melhor de definir isso, ou consertar para que o jogador comece a cair imediatamente após atigir algo em cima
 //do mapa
 #define LIN 30
 #define COL 30
@@ -39,6 +39,10 @@ int main(){
     Escada escadas[LIN*COL] = {0};
     Porta portas[2] = {0};
     Inimigo inimigos[LIN*COL] = {0};
+
+    //!WIP
+    // char *fileMapa = LoadFileText("resources/mapa1.txt");
+    // char Mapa[LIN][COL] = {0};
 
     //Declarando uma matriz para ser o mapa e preenchendo com a matriz exemplo dos criterios
 	char Mapa[LIN][COL]  = {
@@ -78,7 +82,7 @@ int main(){
 
     //declaracao do jogador com base na posição da porta de inicio, decidida na geração do mapa
     //já que esse jogo é só de computador, então a tela sempre será mais larga que alta, então da para deixar o jogador na vertical
-    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/(LIN+1), ScreenSize.y/(LIN+1)}, BROWN, 1, 1, 0, 0, 1, 0, 0.0};
+    Player player = {{portas[0].hitbox.x, portas[0].hitbox.y, ScreenSize.y/(LIN+1)*0.8, ScreenSize.y/(LIN+1)*0.8}, BROWN, 1, 1, 0, 0, 1, 0, 0.0};
     Vector2 pos_p, size_p = {player.hitbox.width, player.hitbox.height};
 
     //loop do jogo

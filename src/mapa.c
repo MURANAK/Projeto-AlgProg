@@ -4,6 +4,21 @@
 #include "obstaculos.h"
 #include "raylib.h"
 
+//!!WIP!!
+//!Função de ler o txt que contém o mapa
+/*
+Essa função recebe o ponteiro pro arquivo de texto e o ponteiro da matriz vazia que vai ser preenchida
+pelo texto no .txt*/
+
+// void ler_mapa(char *fileMapa, char *Mapa[lin][col]) {
+    
+//     if (fileMapa == NULL) {
+//         TraceLog(LOG_ERROR, "Falhou em ler o arquivo de texto!");
+//         return;
+//     }
+
+// }
+
 //!Função de geração do mapa
 /*
 Nessa geração de mapa, os objetos são todos tratados como vetores unidimensionais que tem como capacidade
@@ -13,14 +28,25 @@ mais fácil de percorrer todos para checar colisões, por exemplo.
 Nessa geração as plataformas são geradas como retângulos únicos de tamanhos variados, a príncipio é pra
 isso me ajudar na hora das colisões
 */
+
 void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plats[], Porta portas[], Escada escadas[], Inimigo inimigos[]){
     int i, j, n_plat=0, n_escada=0, n_inimigos=0;
     float tamanho_plat=0; //para saber qual deve ser a largura de cada plataforma
     Vector2 celula; //as celulas ficticias da tela dividida em grade
 
-    //dividindo a tela em uma grade
-    celula.x = tela.x / (float)col; //largura da celula
-    celula.y = tela.y / (float)lin; //altura da celula
+    //dividindo a tela em uma grade; garante que as células são sempre quadradas e cabem na tela
+    if (tela.x < tela.y) {
+        celula.x = tela.x / (float)col; //se a tela for vertical
+        celula.y = tela.x / (float)lin;
+    } else {
+        celula.x = tela.y / (float)col; //se a tela for horizontal
+        celula.y = tela.y / (float)lin;
+
+    }
+
+    float offset_x = (tela.x - celula.x * col) / 2.0;
+    float offset_y = (tela.y - celula.y * lin) / 2.0;
+
 
     for(i=0; i<lin; i++){
         for(j=0; j<col; j++){
@@ -28,8 +54,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
             {
             case 'Z': //caractere 'Z' na tabela eh plataforma, aqui em preto
                 //Definindo posição
-                plats[n_plat].hitbox.x = j*celula.x;
-                plats[n_plat].hitbox.y = i*celula.y;
+                plats[n_plat].hitbox.x = offset_x + j*celula.x;
+                plats[n_plat].hitbox.y = offset_y + i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 plats[n_plat].hitbox.width = celula.x;
@@ -44,8 +70,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
                 
             case 'S': //caractere 'S' na tabela eh subida de escada, aqui em azul escuro
                 //Definindo posição
-                escadas[n_escada].hitbox.x = j*celula.x;
-                escadas[n_escada].hitbox.y = i*celula.y;
+                escadas[n_escada].hitbox.x = offset_x + j*celula.x;
+                escadas[n_escada].hitbox.y = offset_y + i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 escadas[n_escada].hitbox.width = celula.x;
@@ -60,8 +86,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'D': //caractere 'D' na tabela eh descida de escada, aqui em azul claro
                 //Definindo posição
-                escadas[n_escada].hitbox.x = j*celula.x;
-                escadas[n_escada].hitbox.y = i*celula.y;
+                escadas[n_escada].hitbox.x = offset_x + j*celula.x;
+                escadas[n_escada].hitbox.y = offset_y + i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 escadas[n_escada].hitbox.width = celula.x;
@@ -76,8 +102,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'H': //caractere 'H' na tabela eh escada para efeito visual, aqui em roxo
                 //Definindo posição
-                escadas[n_escada].hitbox.x = j*celula.x;
-                escadas[n_escada].hitbox.y = i*celula.y;
+                escadas[n_escada].hitbox.x = offset_x + j*celula.x;
+                escadas[n_escada].hitbox.y = offset_y + i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 escadas[n_escada].hitbox.width = celula.x;
@@ -92,8 +118,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'P': //caractere 'P' na tabela eh a posicao inicial do jogador, aqui em verde
                 //Definindo posição
-                portas[0].hitbox.x = j*celula.x;
-                portas[0].hitbox.y = i*celula.y;
+                portas[0].hitbox.x = offset_x + j*celula.x;
+                portas[0].hitbox.y = offset_y + i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 portas[0].hitbox.width = celula.x;
@@ -106,8 +132,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'F': //caractere 'F' na tabela eh o final da fase, aqui em dourado
                 //Definindo posição
-                portas[1].hitbox.x = j*celula.x;
-                portas[1].hitbox.y = i*celula.y;
+                portas[1].hitbox.x = offset_x + j*celula.x;
+                portas[1].hitbox.y = offset_y + i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 portas[1].hitbox.width = celula.x;
@@ -120,8 +146,8 @@ void gerar_mapa(Vector2 tela, int lin, int col, char map[][col], Plataforma plat
 
             case 'E': //caractere ´E´ na tabela eh inimigo, aqui em vermelho
                 //Definindo posição
-                inimigos[n_inimigos].hitbox.x = j*celula.x;
-                inimigos[n_inimigos].hitbox.y = i*celula.y;
+                inimigos[n_inimigos].hitbox.x = offset_x + j*celula.x;
+                inimigos[n_inimigos].hitbox.y = offset_y + i*celula.y;
 
                 //Definindo tamanho, lembrando que x é a largura e y é a altura
                 inimigos[n_inimigos].hitbox.width = celula.x;
