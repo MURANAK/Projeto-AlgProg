@@ -39,6 +39,9 @@ int main(){
     Escada escadas[LIN*COL] = {0};
     Porta portas[2] = {0};
     Inimigo inimigos[LIN*COL] = {0};
+    Placar placar;
+    Cronometro timer;
+    int fase_rodando = 0;
 
     //!WIP
     // char *fileMapa = LoadFileText("resources/mapa1.txt");
@@ -86,6 +89,8 @@ int main(){
     
     //loop do jogo
     while(!WindowShouldClose()){
+        int fase_atual = 1; //só para testar o gamer_over()
+        phase_begin(&timer, &fase_rodando);
         //movimentos
         /*
         Com o delta time(dt) eu consigo definir a velocidade de acordo com quanto tempo demora para carregar
@@ -93,7 +98,7 @@ int main(){
         um computador com FPS maior se move mais. Com o dt acaba igualando. É meio confuso, eu recomendo você pesquisar
         sobre isso pra entender melhor
         */
-        game_over(&player, inimigos, portas);
+
         float dt = GetFrameTime();
         player_move(ScreenSize, &player, VEL, dt, JUMP_POWER, G, plataformas, escadas);
 
@@ -103,9 +108,19 @@ int main(){
         //Fazendo checagens
         colisao_plataformas(&player, plataformas);
         perder_vida(&player, inimigos);
+        game_over(&player, inimigos, portas, &placar, fase_atual, &timer, &fase_rodando);
+        phase_end(&player, portas, &placar, &fase_atual, &timer, &fase_rodando);
 
         //Atualização da frame
+        if (timer.rodando)
+            timer_func(&timer);
         BeginDrawing();
+        //para desenhar timer
+        int tamanhoFonte = 40, margem = 20;
+        const char *texto = TextFormat("%02d:%02d.%02d", timer.minutos, timer.segundos, timer.centesimos);
+        int larguraTexto = MeasureText("00:00.00", tamanhoFonte);
+        int x = ScreenSize.x - larguraTexto - margem;
+        DrawText(texto, x, margem, tamanhoFonte, DARKGRAY);
         desenhar_mapa(LIN, COL, Mapa, plataformas, portas, escadas, inimigos);
         DrawRectangleRec(player.hitbox, player.cor);
         ClearBackground(GRAY);
