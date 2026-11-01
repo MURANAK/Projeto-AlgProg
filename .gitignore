@@ -1,8 +1,12 @@
 Makefile
+*.d
 *.exe
 *.o
 *.bin
 obj-RELEASE/
 .vscode/
+bin/
+build/
+main
 main.copy.code-workspace
 Makefile.android

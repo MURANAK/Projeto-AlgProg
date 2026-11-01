@@ -12,6 +12,6 @@ typedef struct Inimigo{
     Color cor; //?essa parte pode ser substituida por uma string que contem o caminho do arquivo do sprite
 }Inimigo;
 
-enemy_move(Inimigo inimigos[], Plataforma plataformas(), float dt);
+void enemy_move(Inimigo inimigos[], Plataforma plataformas[], float dt);
 
 #endif
